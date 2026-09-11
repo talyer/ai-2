@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>쇼핑몰</title>
+        <link rel="stylesheet" href="css/common.css">
+        <script src="js/jquery-1.12.3.js"></script>
+        <script src="js/common.js"></script>
+
+    <style>
+.subnav { display: none; position: absolute; background: #f0f0f0; list-style: none; padding: 10px; }
+    li:hover .subnav { display: block; }
+    ul li { position: relative; }
+
+
+    #navBar {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+    #navBar a {
+      margin-left: 15px;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    #navBar a:hover {
+      color: #085FF6;
+    }
+  </style>
+    </head>
+    <body>
+
+  <nav id="navBar">
+    <a href="signup.html">회원가입</a>
+    <a href="login.html">로그인</a>
+  </nav>
+  <div id="userInfo">
+    <!-- 로그인한 사용자의 아이디가 여기에 표시됨 -->
+  </div>
+
+   <script>
+    // 페이지 로드시 localStorage에서 로그인 상태 체크
+    document.addEventListener("DOMContentLoaded", function() {
+      // localStorage 에 "loggedInUser" 키가 있으면 로그인된 것임.
+      const loggedInUser = localStorage.getItem("loggedInUser");
+      if (loggedInUser) {
+        // 회원가입, 로그인 버튼 제거 후 아이디 표시하기
+        document.getElementById("navBar").style.display = "none";
+        const userInfoDiv = document.getElementById("userInfo");
+        userInfoDiv.innerHTML = `<p>환영합니다, ${loggedInUser}님!</p>
+          <button onclick="logout()">로그아웃</button>`;
+      }
+    });
+
+    // 로그아웃 함수: 로그인 상태 초기화 후 메인페이지 새로고침
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      location.reload();
+    }
+  </script>
+
+        <!-- 팝업 -->
+        <div class="popup">
+            <h2>후기 적립금 안내</h2>
+            <p>
+                #적립금 챙겨가세요!<br>
+                #후기만 남겨도 적립금이 빵빵!<br>
+                HANSEI 쇼핑몰 회원님들의 구매 후<br> 솔직한 의견을
+                남겨주시는 구매후기 입니다.<br> 구매하신
+                상품을 착용하시고 사진을 찍어<br> 구매후기
+                를 작성해주시기 바랍니다.<br>
+                <br>
+                - 적립금은 작성후 2~7일 이내 지급<br>
+                - 의도적인 비방글, 도배, 욕설등은 사전<br>
+                공지없이 자동삭제되며 형법규정에 따<br>
+                라 형사처벌을 받으실 수 있습니다.<br>
+            </p>
+            <button>닫기</button>
+        </div>
+        
+        <div class="header">
+            <h1><a href="#"><img src="images/logo.png" alt="로고"></a></h1>
+            <div class="gnb">
+                <ul>
+                    <li>
+                        <a href="#" class="mainnav">Top</a>
+                        <ul class="subnav">
+                            <li><a href="T-shirt.html">티셔츠</a></li>
+                            <li><a href="blouse.html">블라우스</a></li>
+                            <li><a href="hood.html">후드</a></li>
+                            <li><a href="knitwear.html">니트</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="mainnav">Pants</a>
+                        <ul class="subnav">
+                            <li><a href="jeans.html">청바지</a></li>
+                            <li><a href="slacks.html">슬랙스</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="mainnav">Outer</a>
+                        <ul class="subnav">
+                            <li><a href="coat.html">코트</a></li>
+                            <li><a href="cardigan.html">가디건</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="mainnav">Acc</a>
+                        <ul class="subnav">
+                            <li><a href="earring.html">귀걸이</a></li>
+                            <li><a href="necklace.html">목걸이</a></li>
+                            <li><a href="ring.html">반지</a></li>
+                            <li><a href="bracelet.html">팔찌</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main">
+            <!-- 슬라이드 애니메이션 -->
+            <ul>
+                <li><a href="#"><img src="images/main01.png" alt="메인이미지"></a></li>
+                <li><a href="#"><img src="images/main02.png" alt="메인이미지"></a></li>
+                <li><a href="#"><img src="images/main03.png" alt="메인이미지"></a></li>
+            </ul>
+        </div>
+        <div class="contents">
+            <div class="board">
+                <!-- 버튼파트 제작 -->
+                <ul class="btn">
+                    <li><a href="#" class="active">공지사항</a></li><!-- 0 -->
+                    <li><a href="#">갤러리</a></li><!-- 1 -->
+                </ul>
+                <!-- 컨텐츠 -->
+                <div class="bwrap"><!-- 자손의 인덱스번호를 위해 한번더 묶음 -->
+                    <div class="notice">
+                        <ul>
+                            <li>
+                                <a href="#" class="popupopen">· HANSEI 쇼핑몰 사이트 후기 적립금 안내</a>
+                                <span class="date">2025.03.05</span>
+                            </li>
+                            <li>
+                                <a href="#">· 주문 후 배송전취소/반품/상품교환 유의사항 </a>
+                                <span class="date">2025.03.02</span>
+                            </li>
+                            <li>
+                                <a href="#">· 교환 및 반품 Q&amp;A</a>
+                                <span class="date">2025.02.11</span>
+                            </li>
+                            <li>
+                                <a href="#">· 설 연휴 휴무 및 배송안내</a>
+                                <span class="date">2025.01.15</span>
+                            </li>
+                            <li>
+                                <a href="#">· 대한택배 파업관련 발송 대책 공지</a>
+                                <span class="date">2025.01.11</span>
+                            </li>
+                        </ul>
+                    </div><!-- 0 -->
+                    <div class="gallery">
+                        <ul>
+                            <li><a href="#"><img src="images/gall01.png" alt="갤러리"></a></li>
+                            <li><a href="#"><img src="images/gall02.png" alt="갤러리"></a></li>
+                            <li><a href="#"><img src="images/gall03.png" alt="갤러리"></a></li>
+                        </ul>
+                    </div><!-- 1 -->
+                </div>
+            </div>
+            <div class="banner">
+                <a href="#">
+                    <a href="#">
+                        <img src="images/banner.png" alt="로고">
+                    </a>
+                </a>
+            </div>
+            <div class="now">
+                <a href="#">
+                    <img src="images/now.png" alt="로고">
+                </a>
+            </div>
+        </div>
+        <div class="footer">
+            <h1><a href="#"><img src="images/footer_logo.png" alt="로고"></a></h1>
+            <p>Copyright ⓒ HANSEI . All rights reserved.</p>
+            <ul class="sns">
+                <li><a href="#">FACEBOOK</a></li>
+                <li><a href="#">INSTAGRAM</a></li>
+                <li><a href="#">TWITTER</a></li>
+            </ul>
+        </div>
+    </body>
+</html>

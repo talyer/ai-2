@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    form { max-width: 400px; }
+    label { display: block; margin-top: 10px; }
+    input { width: 100%; padding: 5px; }
+    .message { color: red; margin-top: 5px; }
+    button { padding: 5px 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>로그인</h1>
+  <form id="loginForm">
+    <label>아이디:
+      <input type="text" id="loginId" required>
+    </label>
+    <label>비밀번호:
+      <input type="password" id="loginPassword" required>
+    </label>
+    <button type="submit">로그인</button>
+    <p id="loginMessage" class="message"></p>
+  </form>
+
+  <script>
+    // localStorage에서 users 배열 가져오기
+    function getUsers() {
+      const users = localStorage.getItem("users");
+      return users ? JSON.parse(users) : [];
+    }
+
+    // 로그인 폼 제출 이벤트 처리
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // 기본 제출 막기
+      const loginId = document.getElementById("loginId").value.trim();
+      const loginPassword = document.getElementById("loginPassword").value.trim();
+      const loginMsg = document.getElementById("loginMessage");
+      const users = getUsers();
+
+      // 저장된 사용자 중 일치하는 정보 검색
+      const user = users.find(user => user.id === loginId && user.password === loginPassword);
+      if (user) {
+        // 로그인 성공 시 localStorage에 로그인 상태 저장
+        localStorage.setItem("loggedInUser", user.id);
+        window.location.href = "index.html";
+      } else {
+        loginMsg.textContent = "아이디 또는 비밀번호가 잘못되었습니다.";
+      }
+    });
+  </script>
+</body>
+</html>

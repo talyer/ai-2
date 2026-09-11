@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    form { max-width: 400px; }
+    label { display: block; margin-top: 10px; }
+    input { width: 100%; padding: 5px; }
+    .message { color: red; margin-top: 5px; }
+    button { padding: 5px 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>회원가입</h1>
+  <form id="signupForm">
+    <label>성명:
+      <input type="text" id="name" required>
+    </label>
+    <label>아이디:
+      <input type="text" id="userId" required>
+      <button type="button" onclick="checkDuplicate()">중복확인</button>
+      <span id="idMessage" class="message"></span>
+    </label>
+    <label>비밀번호:
+      <input type="password" id="password" required>
+    </label>
+    <button type="submit">회원가입</button>
+  </form>
+
+  <script>
+    // localStorage에서 users 배열을 가져와 없으면 초기화합니다.
+    function getUsers() {
+      const users = localStorage.getItem("users");
+      return users ? JSON.parse(users) : [];
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    let isIdChecked = false; // 중복확인 여부
+
+    // 중복확인 함수
+    function checkDuplicate() {
+      const userIdInput = document.getElementById("userId").value.trim();
+      const messageSpan = document.getElementById("idMessage");
+      if (!userIdInput) {
+        messageSpan.textContent = "아이디를 입력해주세요.";
+        isIdChecked = false;
+        return;
+      }
+      const users = getUsers();
+      const exists = users.some(user => user.id === userIdInput);
+      if (exists) {
+        messageSpan.textContent = "중복된 아이디가 있습니다.";
+        isIdChecked = false;
+      } else {
+        messageSpan.style.color = "green";
+        messageSpan.textContent = "사용 가능한 아이디입니다.";
+        isIdChecked = true;
+      }
+    }
+
+    // 폼 제출 이벤트 처리
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // 기본 제출 동작 차단
+      const name = document.getElementById("name").value.trim();
+      const userId = document.getElementById("userId").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // 필수 입력 값 확인
+      if (!name || !userId || !password) {
+        alert("모든 필드를 입력해주세요.");
+        return;
+      }
+      // 중복 아이디 체크 여부 확인
+      if (!isIdChecked) {
+        alert("아이디 중복확인을 해주세요.");
+        return;
+      }
+      // 사용자 정보를 localStorage의 users 배열에 저장
+      const users = getUsers();
+      users.push({ name, id: userId, password });
+      saveUsers(users);
+      alert("회원가입이 성공적으로 완료되었습니다.");
+      // 회원가입 후 메인 페이지로 이동
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
