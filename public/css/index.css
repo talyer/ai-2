@@ -1,0 +1,119 @@
+.subnav { 
+  display: none; 
+  position: absolute; 
+  background: #f0f0f0; 
+  list-style: none; 
+  padding: 10px; 
+}
+li:hover .subnav { 
+  display: block; 
+}
+ul li { 
+  position: relative;
+}
+
+#navBar {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  /* 추가 */
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#navBar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#navBar a:hover {
+  color: #085FF6;
+}
+
+.welcone-message {
+  color: #333;
+  font-size: 14px;
+}
+
+.logout-form {
+  display: inline;
+  margin: 0;
+}
+
+.logout-button {
+  padding: 7px 12px;
+  color: white;
+  background: #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: #085ff6;
+}
+
+.ai-review-section {
+  width:1200px;
+  margin: 60px auto;
+  padding: 50px 40px;
+  text-align: center;
+  background: #f7f8fb;
+}
+
+.ai-review-heading span {
+  color: #085ff6;
+  font-size: 13px;
+  font-weight: blod;
+  letter-spacing: 2px;
+}
+
+.ai-review-heading h2 {
+  margin: 14px 0;
+  color: #222;
+  font-size: 30px;
+}
+
+.ai-review-heading p {
+  color: #666;
+  line-height: 1.7;
+}
+
+.ai-feature-list {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 35px 0;
+}
+
+.ai-feature-list article {
+  width: 280px;
+  padding: 25px 20px;
+  background: white;
+  border: 1px solid #ddd;
+}
+
+.ai-feature-list h3 {
+  margin-top: 0;
+  color: #085ff6;
+}
+
+.ai-feature-list p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.ai-product-button {
+  display: inline-block;
+  padding: 13px 24px;
+  color: white;
+  background: #085ff6;
+  text-decoration: none;
+}
+
+.ai-product-button:hover {
+  background: #064ac0;
+}
