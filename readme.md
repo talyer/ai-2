@@ -21,4 +21,4 @@ morgan
 
 npm install express ejs mysql2 dotenv bcrypt jsonwebtoken cookie-parser helmet express-rate-limit express-validator morgan
 
-![alt text](image.png)
+[AI_의류_쇼핑몰_프로젝트_초보자_가이드.pdf](https://github.com/user-attachments/files/32137912/AI_._._._._.pdf)
