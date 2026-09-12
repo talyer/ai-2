@@ -6,17 +6,29 @@
 
 # 설치한 프로그램과 라이브러리 
 .Node.js 24
+
 .Express
+
 .EJS
+
 .MySQL
+
 .Docker Compose
+
 .dotenv
+
 .mysql2
+
 .bcrypt
+
 .JWT
+
 .Helmet
+
 .express-validator
+
 .express-rate-limit
+
 .morgan
 
 npm install express ejs mysql2 dotenv bcrypt jsonwebtoken cookie-parser helmet express-rate-limit express-validator morgan
