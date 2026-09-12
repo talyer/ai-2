@@ -1,5 +1,5 @@
 node_modules/
-.emv
+.env
 uploads/*
 !uploads/.gitkeep
 npm-debug.log*
