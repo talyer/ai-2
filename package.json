@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^1.20.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
@@ -11,18 +12,18 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.12.1",
     "mysql2": "^3.24.4",
-    "nodejs": "^0.0.0"
+    "sanitize-html": "^2.17.7"
   },
   "name": "ai-fashion-review-shop",
   "version": "1.0.0",
-  "description": "AI 기반 의류 쇼핑몰 리뷰 분석 시스템",
+  "description": "AI 기반 의류 쇼핑몰 리뷰 분석 및 GX CommerceSOC 보안관제 시스템",
   "main": "src/server.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "node --test",
-    "dev": "node --watch src/server.js",
+    "test": "jest --runInBand",
+    "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "db:migrate": "node database/migrate.js"
   },
@@ -40,5 +41,10 @@
   "homepage": "https://github.com/twobiny/shoppingmall#readme",
   "engines": {
     "node": ">=24 <25"
+  },
+  "devDependencies": {
+    "jest": "^30.5.1",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
   }
 }

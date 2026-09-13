@@ -2,54 +2,80 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>로그인</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    form { max-width: 400px; }
-    label { display: block; margin-top: 10px; }
-    input { width: 100%; padding: 5px; }
-    .message { color: red; margin-top: 5px; }
-    button { padding: 5px 10px; margin-top: 10px; }
-  </style>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title><%= typeof title !== 'undefined' ? title : '로그인' %></title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/auth.css">
 </head>
+
 <body>
-  <h1>로그인</h1>
-  <form id="loginForm">
-    <label>아이디:
-      <input type="text" id="loginId" required>
-    </label>
-    <label>비밀번호:
-      <input type="password" id="loginPassword" required>
-    </label>
-    <button type="submit">로그인</button>
-    <p id="loginMessage" class="message"></p>
-  </form>
+  <main class="auth-container">
+    <section class="auth-box">
+      <h1>로그인</h1>
 
-  <script>
-    // localStorage에서 users 배열 가져오기
-    function getUsers() {
-      const users = localStorage.getItem("users");
-      return users ? JSON.parse(users) : [];
-    }
+      <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+        <p class="error-message" role="alert">
+          <%= errorMessage %>
+        </p>
+      <% } %>
 
-    // 로그인 폼 제출 이벤트 처리
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault(); // 기본 제출 막기
-      const loginId = document.getElementById("loginId").value.trim();
-      const loginPassword = document.getElementById("loginPassword").value.trim();
-      const loginMsg = document.getElementById("loginMessage");
-      const users = getUsers();
+      <form
+        id="loginForm"
+        method="post"
+        action="/auth/login"
+      >
+        <div class="form-group">
+          <label for="loginId">아이디</label>
 
-      // 저장된 사용자 중 일치하는 정보 검색
-      const user = users.find(user => user.id === loginId && user.password === loginPassword);
-      if (user) {
-        // 로그인 성공 시 localStorage에 로그인 상태 저장
-        localStorage.setItem("loggedInUser", user.id);
-        window.location.href = "index.html";
-      } else {
-        loginMsg.textContent = "아이디 또는 비밀번호가 잘못되었습니다.";
-      }
-    });
-  </script>
+          <input
+            type="text"
+            id="loginId"
+            name="loginId"
+            value="<%=
+              typeof formData !== 'undefined' && formData.loginId
+                ? formData.loginId
+                : ''
+            %>"
+            minlength="4"
+            maxlength="50"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">비밀번호</label>
+
+          <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            minlength="8"
+            maxlength="100"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="primary-button">
+          로그인
+        </button>
+      </form>
+
+      <div class="auth-links">
+        <p>
+          아직 계정이 없나요?
+          <a href="/auth/signup">회원가입</a>
+        </p>
+
+        <a href="/">홈으로 돌아가기</a>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
