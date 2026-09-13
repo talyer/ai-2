@@ -78,17 +78,17 @@ app.use(
   )
 );
 
-app.get(
-  '/health',
-  (req, res) => {
-    return res.status(200).json({
-      status: 'ok',
-      environment: env.nodeEnv,
-      aiProvider: env.ai.provider,
-      socEnabled: env.soc.enabled
-    });
-  }
-);
+// app.get(
+//   '/health',
+//   (req, res) => {
+//     return res.status(200).json({
+//       status: 'ok',
+//       environment: env.nodeEnv,
+//       aiProvider: env.ai.provider,
+//       socEnabled: env.soc.enabled
+//     });
+//   }
+// );
 
 app.use(
   '/',

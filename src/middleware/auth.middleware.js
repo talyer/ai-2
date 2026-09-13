@@ -1,13 +1,13 @@
 'use strict';
 const jwt = require('jsonwebtoken');
-const env = require('../config/env');
+const { env } = require('../config/env');
 
 function authMiddleware(req, res, next) {
   const cookieToken = req.cookies?.access_token;
 
   const authorization = req.get('authorization');
 
-  const bearerToken = authorization?.startsWith('Bearer')
+  const bearerToken = authorization?.startsWith('Bearer ')
     ? authorization.slice(7)
     : null;
 

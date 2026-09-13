@@ -1,5 +1,5 @@
 'use strict';
-const { createSecurityEvent } = require('../services/soc/even.service');
+const { createSecurityEvent } = require('../services/soc/event.service');
 
 async function adminMiddleware(req, res, next) {
   if (req.user?.role === 'admin') {

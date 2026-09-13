@@ -46,7 +46,7 @@ async function createSecurityEvent({
 
   const [result] = await pool.execute(
     `
-    INSERT INTO security_envents (
+    INSERT INTO security_events (
       request_id,
       event_type,
       category,
