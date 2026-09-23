@@ -2,7 +2,7 @@
 const mysql = require('mysql2/promise');
 const { env } = require('./env');
 
-const pool = mysql.createPool({
+const poolOptions = {
   host : env.database.host,
   port : env.database.port,
   user : env.database.user,
@@ -17,8 +17,18 @@ const pool = mysql.createPool({
   keepAliveInitialDelay : 0,
 
   charset : 'utf8mb4',
-  timezone : '+09:00'
-});
+  timezone : '+09:00',
+  connectTimeout : 15000
+};
+
+if (env.database.ssl) {
+  poolOptions.ssl = {
+    minVersion : 'TLSv1.2',
+    rejectUnauthorized : true
+  };
+}
+
+const pool = mysql.createPool(poolOptions);
 
 async function checkDatabase() {
   const connection = await pool.getConnection();
