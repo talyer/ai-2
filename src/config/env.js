@@ -50,7 +50,8 @@ const aiProvider =
 
 const allowedAiProviders = [
   'mock',
-  'clova'
+  'clova',
+  'ollama'
 ];
 
 if (!allowedAiProviders.includes(aiProvider)) {
@@ -108,7 +109,13 @@ const env = Object.freeze ({
 
     model : process.env.CLOVA_STUDIO_MODEL || '',
 
-    timeoutMs : Number(process.env.CLOVA_TIMEOUT_MS || 15000)
+    timeoutMs : Number(process.env.CLOVA_TIMEOUT_MS || 15000),
+
+    ollama : {
+      url : (process.env.OLLAMA_URL || 'http://127.0.0.1:11434').replace(/\/$/, ''),
+      model : process.env.OLLAMA_MODEL || 'gpt-oss:20b',
+      timeoutMs : Number(process.env.OLLAMA_TIMEOUT_MS || 120000)
+    }
   },
 
   soc: {
