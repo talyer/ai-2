@@ -6,11 +6,15 @@ const {
   checkDatabase
 } = require('../config/database');
 
+
 const {
   env
 } = require('../config/env');
 
 const router = express.Router();
+
+const productRepository = require('../repositories/product.repository');
+
 
 /*
 상품 카테고리 허용 목록
@@ -62,43 +66,45 @@ function normalizeCategory(value) {
 모든 상품 카테고리는
 products/category.ejs 하나를 사용합니다.
 */
-function renderProductCategory(
+async function renderProductCategory(
   categoryValue,
   res,
   next
 ) {
-  const category =
-    normalizeCategory(
-      categoryValue
-    );
+  try {
+    const category =
+      normalizeCategory(
+        categoryValue
+      );
 
-  const title =
-    productCategories[category];
+    const title =
+      productCategories[category];
 
-  /*
-  허용 목록에 없는 카테고리이면
-  app.js의 404 처리로 보냅니다.
-  */
-  if (!title) {
-    return next();
-  }
-
-  return res.render(
-    'products/category',
-    {
-      title,
-      category,
-
-      currentUser:
-        getCurrentUser(res),
-
-      /*
-      MySQL 상품 기능 구현 전에는
-      빈 배열을 전달합니다.
-      */
-      products: []
+    if (!title) {
+      return next();
     }
-  );
+    //  적용 만약에 없는 카테고리면 304오류
+    const products =
+      await productRepository
+        .findActiveByCategorySlug(
+          category
+        );
+
+    return res.render(
+      'products/category',
+      {
+        title,
+        category,
+
+        currentUser:
+          getCurrentUser(res),
+
+        products
+      }
+    );
+  } catch (error) {
+    return next(error);
+  }
 }
 
 /*
