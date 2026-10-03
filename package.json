@@ -26,6 +26,7 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "db:migrate": "node database/migrate.js",
+    "db:seed" : "node database/seed.js",
     "ai:ask": "node scripts/ask-ai.js"
   },
   "repository": {
