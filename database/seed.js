@@ -1,5 +1,10 @@
 'use strict';
 
+// 물품 사진 추가
+
+const fs = require('node:fs');
+const path = require('node:path');
+//////////////////////////////////////
 const bcrypt = require('bcrypt');
 
 const {
@@ -13,84 +18,96 @@ const products = [
     name: '베이직 반팔 티셔츠',
     description: '편하게 착용할 수 있는 기본 티셔츠',
     price: 19900,
-    stockQuantity: 30
+    stockQuantity: 30,
+    imageUrl: '/images/T-shirt1.jfif'
   },
   {
     categorySlug: 'blouse',
     name: '데일리 블라우스',
     description: '일상에서 착용하기 좋은 블라우스',
     price: 32900,
-    stockQuantity: 20
+    stockQuantity: 20,
+    imageUrl: '/images/blouse1.png'
   },
   {
     categorySlug: 'hood',
     name: '베이직 후드',
     description: '편안한 기본 후드 상품',
     price: 39900,
-    stockQuantity: 20
+    stockQuantity: 20,
+    imageUrl: 'images/hood1.jfif'
   },
   {
     categorySlug: 'knitwear',
     name: '라운드 니트',
     description: '부드러운 소재의 라운드 니트',
     price: 45900,
-    stockQuantity: 15
+    stockQuantity: 15,
+    imageUrl: '/images/knitwear1.jfif'
   },
   {
     categorySlug: 'jeans',
     name: '스트레이트 청바지',
     description: '기본 스트레이트 핏 청바지',
     price: 49900,
-    stockQuantity: 20
+    stockQuantity: 20,
+    imageUrl: '/images/jeans1.jfif'
   },
   {
     categorySlug: 'slacks',
     name: '데일리 슬랙스',
     description: '깔끔한 디자인의 기본 슬랙스',
     price: 43900,
-    stockQuantity: 20
+    stockQuantity: 20,
+    imageUrl: '/images/slacks1.png'
   },
   {
     categorySlug: 'coat',
     name: '싱글 롱코트',
     description: '겨울용 싱글 롱코트',
     price: 109000,
-    stockQuantity: 10
+    stockQuantity: 10,
+    imageUrl: '/images/coat1.jfif'
   },
   {
     categorySlug: 'cardigan',
     name: '베이직 가디건',
     description: '가볍게 착용할 수 있는 가디건',
     price: 39900,
-    stockQuantity: 15
+    stockQuantity: 15,
+    imageUrl: '/images/cardigan1.jfif'
   },
   {
     categorySlug: 'earring',
     name: '미니 링 귀걸이',
     description: '심플한 디자인의 링 귀걸이',
     price: 12900,
-    stockQuantity: 30
+    stockQuantity: 30,
+    imageUrl: '/images/earring1.jfif'
   },
   {
     categorySlug: 'necklace',
     name: '실버 목걸이',
     description: '기본 디자인의 실버 목걸이',
     price: 24900,
-    stockQuantity: 20
+    stockQuantity: 20,
+    imageUrl: '/images/nacklace1.jfif'
   },
   {
     categorySlug: 'ring',
     name: '심플 반지',
     description: '데일리로 착용할 수 있는 반지',
     price: 15900,
-    stockQuantity: 25
+    stockQuantity: 25,
+    imageUrl: '/images/ring1.jfif'
   },
   {
     categorySlug: 'bracelet',
     name: '체인 팔찌',
     description: '심플한 체인 형태의 팔찌',
     price: 19900,
-    stockQuantity: 20
+    stockQuantity: 20,
+    imageUrl: '/images/bracelet1.jfif'
   }
 ];
 
@@ -199,6 +216,7 @@ async function seedProducts(connection) {
           description = ?,
           price = ?,
           stock_quantity = ?,
+          image_url = ?,
           is_active = TRUE
         WHERE id = ?
         `,
@@ -206,6 +224,7 @@ async function seedProducts(connection) {
           product.description,
           product.price,
           product.stockQuantity,
+          product.imageUrl,
           existingProducts[0].id
         ]
       );
@@ -236,7 +255,7 @@ async function seedProducts(connection) {
         product.description,
         product.price,
         product.stockQuantity,
-        null
+        product.imageUrl
       ]
     );
 
