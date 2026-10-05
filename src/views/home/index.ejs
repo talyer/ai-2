@@ -24,8 +24,8 @@
       currentUser
     ) { %>
       <span class="welcome-message">
-        환영합니다,
-        <strong><%= currentUser.name || currentUser.username %></strong>님!
+      환영합니다,
+      <strong><%= currentUser.displayName || currentUser.loginId %></strong>님!
       </span>
 
       <form
