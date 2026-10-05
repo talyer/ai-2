@@ -27,6 +27,7 @@
     "start": "node src/server.js",
     "db:migrate": "node database/migrate.js",
     "db:seed" : "node database/seed.js",
+    "db:tables": "node scripts/check-tables.js",
     "ai:ask": "node scripts/ask-ai.js"
   },
   "repository": {
