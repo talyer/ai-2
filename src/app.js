@@ -13,6 +13,17 @@ const {
 const pageRoutes =
   require('./routes/page.routes');
 
+const authRoutes =
+  require('./routes/auth.routes');
+
+// const reviewRoutes =
+//   require('./routes/review.routes');
+
+const requestContext = require('./middleware/request-context.middleware');
+
+const currentUserMiddleware = require('/middleware/current-user.middleware');
+
+
 const app = express();
 
 app.disable('x-powered-by');
@@ -65,6 +76,9 @@ app.use(
   cookieParser()
 );
 
+app.use(requestContext);
+app.use(currentUserMiddleware)
+
 app.use(
   express.static(
     path.join(
@@ -90,23 +104,20 @@ app.use(
 //   }
 // );
 
+app.use('/auth', authRoutes);
+
 app.use(
   '/',
   pageRoutes
 );
 
-/*
-아직 연결하지 않습니다.
 
-const authRoutes =
-  require('./routes/auth.routes');
+// 나중에 쓸거
 
-const reviewRoutes =
-  require('./routes/review.routes');
 
-app.use('/auth', authRoutes);
-app.use('/reviews', reviewRoutes);
-*/
+// app.use('/reviews', reviewRoutes);
+
+
 
 app.use(
   (req, res) => {
