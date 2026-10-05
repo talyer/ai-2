@@ -21,7 +21,7 @@ const authRoutes =
 
 const requestContext = require('./middleware/request-context.middleware');
 
-const currentUserMiddleware = require('/middleware/current-user.middleware');
+const currentUserMiddleware = require('./middleware/current-user.middleware');
 
 
 const app = express();
