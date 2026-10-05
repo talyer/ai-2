@@ -13,6 +13,12 @@ const {
 const pageRoutes =
   require('./routes/page.routes');
 
+const authRoutes =
+  require('./routes/auth.routes');
+
+const currentUserMiddleware =
+  require('./middleware/current-user.middleware');
+
 const app = express();
 
 app.disable('x-powered-by');
@@ -90,23 +96,12 @@ app.use(
 //   }
 // );
 
-app.use(
-  '/',
-  pageRoutes
-);
-
-/*
-아직 연결하지 않습니다.
-
-const authRoutes =
-  require('./routes/auth.routes');
-
-const reviewRoutes =
-  require('./routes/review.routes');
+app.use(currentUserMiddleware);
 
 app.use('/auth', authRoutes);
-app.use('/reviews', reviewRoutes);
-*/
+
+app.use('/', pageRoutes);
+
 
 app.use(
   (req, res) => {
