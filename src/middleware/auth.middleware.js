@@ -28,7 +28,7 @@ function authMiddleware(req, res, next) {
     next();
   } catch (error) {
     return res.status(401).json({
-      message: '로그인 정보가 유호하지 않습니다.'
+      message: '로그인 정보가 유효하지 않습니다.'
     });
   }
 }
