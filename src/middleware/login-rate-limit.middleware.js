@@ -17,7 +17,7 @@ const loginRateLimit = rateLimit({
       eventType : 'WEB_RATE_LIMIT',
       category : 'AUTHENTICATION',
       sourceIp : req.ip,
-      username : req.body?.username || null,
+      username : req.body?.loginId || null,
       method : req.method,
       path : req.originalUrl,
       statusCode : 429,
