@@ -16,8 +16,18 @@ const pageRoutes =
 const authRoutes =
   require('./routes/auth.routes');
 
+<<<<<<< HEAD
 const currentUserMiddleware =
   require('./middleware/current-user.middleware');
+=======
+// const reviewRoutes =
+//   require('./routes/review.routes');
+
+const requestContext = require('./middleware/request-context.middleware');
+
+const currentUserMiddleware = require('./middleware/current-user.middleware');
+
+>>>>>>> 5fc38b26d8b0bc7c876649e1a746703353dfd87b
 
 const app = express();
 
@@ -71,6 +81,9 @@ app.use(
   cookieParser()
 );
 
+app.use(requestContext);
+app.use(currentUserMiddleware)
+
 app.use(
   express.static(
     path.join(
@@ -96,12 +109,29 @@ app.use(
 //   }
 // );
 
+<<<<<<< HEAD
 app.use(currentUserMiddleware);
 
 app.use('/auth', authRoutes);
 
 app.use('/', pageRoutes);
 
+=======
+app.use('/auth', authRoutes);
+
+app.use(
+  '/',
+  pageRoutes
+);
+
+
+// 나중에 쓸거
+
+
+// app.use('/reviews', reviewRoutes);
+
+
+>>>>>>> 5fc38b26d8b0bc7c876649e1a746703353dfd87b
 
 app.use(
   (req, res) => {
