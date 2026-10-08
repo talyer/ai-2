@@ -14,10 +14,10 @@ const { env } = require('../../config/env');
 let instancePromise;
 
 async function buildInstance() {
-  const KeySecret = await deriveHmacKeySecret(env.botProtection.hmacSecret);
+  const keySecret = await deriveHmacKeySecret(env.botProtection.hmacSecret);
 
   return create({
-    hmacSignatureSecret: env.botProtectionn.hmacSecret,
+    hmacSignatureSecret: env.botProtection.hmacSecret,
 
     hmacKeySignatureSecret: keySecret,
 
@@ -29,7 +29,7 @@ async function buildInstance() {
       counter: randomInt(5000, 10000),
 
       expiresAt: new Date(
-        Date.now() + env.botProtection.expiresSeconds + 1000
+        Date.now() + env.botProtection.expiresSeconds * 1000
       )
     }),
 
@@ -52,7 +52,7 @@ function getInstance() {
 
 async function challengeHandler(req, res, next) {
   try{
-    if(!env.botProtecion.enabled) {
+    if(!env.botProtection.enabled) {
       return res.status(404).json({
         message: '봇 방지 기능이 비활성화되어 있습니다.'
       });
@@ -90,7 +90,7 @@ function requireBotCheck(pageName) {
             return next(error);
           }
 
-          if (!res.locals.altch ?.verified) {
+          if (!res.locals.altcha?.verified) {
             return res.redirect(
               303,
               `/auth/${pageName}` + '?botCheck=failed'

@@ -27,6 +27,8 @@ const botRoutes = require('./routes/bot.routes');
 
 const app = express();
 
+app.locals.botProtectionEnabled = env.botProtection.enabled;
+
 app.disable('x-powered-by');
 
 app.set(
