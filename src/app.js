@@ -5,6 +5,10 @@ const express = require('express');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+// 회원가입, 로그인 기능 Captcha 즉 봇 방지 시스템 추가 할 예정
+// const Crypto = require('crypto');
+
+
 
 const {
   env
@@ -16,18 +20,10 @@ const pageRoutes =
 const authRoutes =
   require('./routes/auth.routes');
 
-<<<<<<< HEAD
 const currentUserMiddleware =
   require('./middleware/current-user.middleware');
-=======
-// const reviewRoutes =
-//   require('./routes/review.routes');
 
-const requestContext = require('./middleware/request-context.middleware');
-
-const currentUserMiddleware = require('./middleware/current-user.middleware');
-
->>>>>>> 5fc38b26d8b0bc7c876649e1a746703353dfd87b
+const botRoutes = require('./routes/bot.routes');
 
 const app = express();
 
@@ -81,9 +77,6 @@ app.use(
   cookieParser()
 );
 
-app.use(requestContext);
-app.use(currentUserMiddleware)
-
 app.use(
   express.static(
     path.join(
@@ -109,29 +102,14 @@ app.use(
 //   }
 // );
 
-<<<<<<< HEAD
+app.use('/security/bot', botRoutes);
+
 app.use(currentUserMiddleware);
 
 app.use('/auth', authRoutes);
 
 app.use('/', pageRoutes);
 
-=======
-app.use('/auth', authRoutes);
-
-app.use(
-  '/',
-  pageRoutes
-);
-
-
-// 나중에 쓸거
-
-
-// app.use('/reviews', reviewRoutes);
-
-
->>>>>>> 5fc38b26d8b0bc7c876649e1a746703353dfd87b
 
 app.use(
   (req, res) => {

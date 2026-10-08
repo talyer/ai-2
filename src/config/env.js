@@ -76,6 +76,16 @@ if (aiProvider == 'clova') {
   }
 }
 
+if (
+  process.env.BOT_PROTECTION_ENABLED === 'true' && !process.env.ALTCHA_HMAC_SECRET
+) {
+  throw new Error(
+    'ALTCHA_HMAC_SECRET 환경변수가 필요합니다.'
+  );
+}
+
+
+
 const env = Object.freeze ({
   nodeEnv : process.env.NODE_ENV || 'development',
   port,
@@ -135,6 +145,17 @@ const env = Object.freeze ({
 
     logRetentionDays: Number(process.env.SOC_LOG_RETENTION_DAYS || 30
     )
+  },
+
+  botProtection: {
+    enabled: 
+      process.env.BOT_PROTECTION_ENABLED === 'true',
+
+    hmacSecret: 
+      process.env.ALTCHA_HMAC_SECRET || '',
+
+    expiresSeconds:
+      Number(process.env.ALTCHA_EXPIRES_SECONDS || 120)
   }
 });
 
