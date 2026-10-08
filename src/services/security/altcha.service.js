@@ -90,7 +90,7 @@ function requireBotCheck(pageName) {
             return next(error);
           }
 
-          if (!res.locals.altcha?.verification?.verified !== true) {
+          if (res.locals.altcha?.verification?.verified !== true) {
             return res.redirect(
               303,
               `/auth/${pageName}?botCheck=failed`

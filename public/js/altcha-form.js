@@ -8,6 +8,10 @@ document.addEventListener(
 
     forms.forEach((form) => {
       const widget = form.querySelector('altcha-widget');
+
+      const submitButton = form.querySelector(
+        '[data-altcha-submit]'
+      )
       
       const statusMessage = form.querySelector(
         '[data-altcha-status]'
