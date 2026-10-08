@@ -25,6 +25,7 @@
   },
   "scripts": {
     "test": "jest --runInBand",
+    "test:security": "jest test/security --runInBand",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "db:migrate": "node database/migrate.js",
