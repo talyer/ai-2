@@ -9,9 +9,14 @@ const userRepository = require('../repositories/user.repository');
 // 서버가 라우터를 정상적으로 불러오는지만 확일할 임시 코드임 확인 후 삭제 할 예정
 
 function showLogin(req, res) {
+  const botCheckFailed = req.query.botCheck === 'failed';
+
   return res.render('auth/login', {
     title : '로그인',
-    errorMessage : null,
+    errorMessage : 
+      botCheckFailed
+        ? '봇 방지 검증에 실패했습니다.'
+        : null,
     formData: {
       loginId : ''
     },
@@ -20,9 +25,15 @@ function showLogin(req, res) {
 }
 
 function showSignup(req, res) {
+  const botCheckFailed = req.query.botCheck === 'failed';
+
   return res.render('auth/signup', {
     title : '회원가입',
-    errorMessage : null 
+    errorMessage : 
+      botCheckFailed
+        ? '봇 방지 검증에 실패했습니다.'
+        : null,
+    currentUser: res.locals.currentUser || null
   });
 }
 

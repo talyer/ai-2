@@ -5,6 +5,8 @@ const { body } = require('express-validator');
 
 const authController = require('../controllers/auth.controller');
 
+const { requireBotCheck } = require('../services/security/altcha.service');
+
 const loginRateLimit = require('../middleware/login-rate-limit.middleware');
 
 const router = express.Router();
@@ -52,6 +54,7 @@ router.get(
 router.post(
   '/login',
   loginRateLimit,
+  requireBotCheck('login'),
   loginValidation,
   authController.login
 );
@@ -63,6 +66,7 @@ router.get(
 
 router.post(
   '/signup',
+  requireBotCheck('signup'),
   signupValidation,
   authController.signup
 );

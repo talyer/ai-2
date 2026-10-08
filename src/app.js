@@ -5,6 +5,10 @@ const express = require('express');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+// 회원가입, 로그인 기능 Captcha 즉 봇 방지 시스템 추가 할 예정
+// const Crypto = require('crypto');
+
+
 
 const {
   env
@@ -19,7 +23,11 @@ const authRoutes =
 const currentUserMiddleware =
   require('./middleware/current-user.middleware');
 
+const botRoutes = require('./routes/bot.routes');
+
 const app = express();
+
+app.locals.botProtectionEnabled = env.botProtection.enabled;
 
 app.disable('x-powered-by');
 
@@ -95,6 +103,8 @@ app.use(
 //     });
 //   }
 // );
+
+app.use('/security/bot', botRoutes);
 
 app.use(currentUserMiddleware);
 
