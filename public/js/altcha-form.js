@@ -2,7 +2,7 @@
 
 document.addEventListener(
   'DOMContentLoaded', () => {
-    const forms = document.querySelectorALL(
+    const forms = document.querySelectorAll(
       '[data-altcha-form]'
     );
 
@@ -57,7 +57,7 @@ document.addEventListener(
       );
 
       form.addEventListener(
-        'submit', (evnet) => {
+        'submit', (event) => {
           if (!submitButton.disabled) {
             return;
           }

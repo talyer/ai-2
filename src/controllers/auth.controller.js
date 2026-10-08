@@ -9,6 +9,8 @@ const userRepository = require('../repositories/user.repository');
 // 서버가 라우터를 정상적으로 불러오는지만 확일할 임시 코드임 확인 후 삭제 할 예정
 
 function showLogin(req, res) {
+  const botCheckFailed = req.query.botCheck === 'failed';
+
   return res.render('auth/login', {
     title : '로그인',
     errorMessage : 

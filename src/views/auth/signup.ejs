@@ -28,12 +28,12 @@
   <p class="message"><%= errorMessage %></p>
 <% } %>
   <% const isBotProtectionEnabled = 
-    typeof botProtectionEnabled !== 'underfined' &&
+    typeof botProtectionEnabled !== 'undefined' &&
     botProtectionEnabled;
   %>
 
 
-  <form method="post" action="/auth/signup">
+  <form method="post" action="/auth/signup" data-altcha-form>
   <label for="displayName">이름</label>
   <input type="text" id="displayName" name="displayName" placeholder="이름을 입력하세요">
 
@@ -68,7 +68,9 @@
     class="primary-button"
     data-altcha-submit>
     <%= isBotProtectionEnabled ? 'disabled' : ''%>
-    회원가입</button>
+  >
+    회원가입
+  </button>
   </form>
   <script src="/js/altcha-form.js" defer></script>
 </body>

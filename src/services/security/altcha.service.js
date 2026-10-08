@@ -90,10 +90,10 @@ function requireBotCheck(pageName) {
             return next(error);
           }
 
-          if (!res.locals.altcha?.verified) {
+          if (!res.locals.altcha?.verification?.verified !== true) {
             return res.redirect(
               303,
-              `/auth/${pageName}` + '?botCheck=failed'
+              `/auth/${pageName}?botCheck=failed`
             );
           }
 
