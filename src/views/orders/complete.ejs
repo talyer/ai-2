@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    <%= title %> | HANSEI 쇼핑몰
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/css/common.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/css/order.css"
+  >
+</head>
+
+<body>
+  <main class="order-container">
+    <section class="order-box">
+      <h1>주문이 접수되었습니다</h1>
+
+      <p class="order-guide">
+        현재 프로젝트에는 실제 결제 기능이 없으므로
+        주문 대기 상태로 저장됩니다.
+      </p>
+
+      <dl class="order-information">
+        <div>
+          <dt>주문번호</dt>
+          <dd>
+            <%= order.order_number %>
+          </dd>
+        </div>
+
+        <div>
+          <dt>주문 상태</dt>
+          <dd>
+            <% if (order.status === 'PENDING') { %>
+              주문 대기
+            <% } else if (order.status === 'PAID') { %>
+              결제 완료
+            <% } else if (order.status === 'SHIPPING') { %>
+              배송 중
+            <% } else if (order.status === 'DELIVERED') { %>
+              배송 완료
+            <% } else { %>
+              주문 취소
+            <% } %>
+          </dd>
+        </div>
+
+        <div>
+          <dt>총 주문금액</dt>
+          <dd>
+            <%=
+              Number(order.total_amount)
+                .toLocaleString('ko-KR')
+            %>원
+          </dd>
+        </div>
+
+        <div>
+          <dt>주문일시</dt>
+          <dd>
+            <%=
+              new Date(order.ordered_at)
+                .toLocaleString('ko-KR')
+            %>
+          </dd>
+        </div>
+      </dl>
+
+      <section class="order-items">
+        <h2>주문 상품</h2>
+
+        <% if (
+          Array.isArray(order.items) &&
+          order.items.length > 0
+        ) { %>
+
+          <% order.items.forEach((item) => { %>
+            <article class="order-item">
+              <% if (item.image_url) { %>
+                <img
+                  src="<%= item.image_url %>"
+                  alt="<%= item.product_name_snapshot %>"
+                >
+              <% } %>
+
+              <div>
+                <h3>
+                  <%= item.product_name_snapshot %>
+                </h3>
+
+                <p>
+                  수량:
+                  <%= item.quantity %>개
+                </p>
+
+                <p>
+                  가격:
+                  <%=
+                    Number(item.unit_price)
+                      .toLocaleString('ko-KR')
+                  %>원
+                </p>
+              </div>
+            </article>
+          <% }); %>
+
+        <% } else { %>
+          <p>주문 상품이 없습니다.</p>
+        <% } %>
+      </section>
+
+      <div class="order-actions">
+        <a href="/orders/history">
+          주문 내역
+        </a>
+
+        <a href="/">
+          쇼핑 계속하기
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

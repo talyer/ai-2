@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    <%= title %> | HANSEI 쇼핑몰
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/css/common.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/css/order.css"
+  >
+</head>
+
+<body>
+  <main class="order-container">
+    <section class="order-box">
+      <h1>내 주문 내역</h1>
+
+      <% if (
+        Array.isArray(orders) &&
+        orders.length > 0
+      ) { %>
+
+        <div class="order-history-list">
+          <% orders.forEach((order) => { %>
+            <article class="history-card">
+              <div>
+                <h2>
+                  <a
+                    href="/orders/<%=
+                      encodeURIComponent(
+                        order.order_number
+                      )
+                    %>"
+                  >
+                    <%= order.order_number %>
+                  </a>
+                </h2>
+
+                <p>
+                  주문 상태:
+                  <strong>
+                    <%= order.status %>
+                  </strong>
+                </p>
+
+                <p>
+                  상품 종류:
+                  <%= order.item_count %>개
+                </p>
+
+                <p>
+                  총 수량:
+                  <%= order.total_quantity %>개
+                </p>
+
+                <p>
+                  주문금액:
+                  <%=
+                    Number(order.total_amount)
+                      .toLocaleString('ko-KR')
+                  %>원
+                </p>
+
+                <p>
+                  주문일시:
+                  <%=
+                    new Date(order.ordered_at)
+                      .toLocaleString('ko-KR')
+                  %>
+                </p>
+              </div>
+            </article>
+          <% }); %>
+        </div>
+
+      <% } else { %>
+        <p class="empty-order-message">
+          아직 주문 내역이 없습니다.
+        </p>
+      <% } %>
+
+      <a
+        class="shop-link"
+        href="/"
+      >
+        쇼핑 계속하기
+      </a>
+    </section>
+  </main>
+</body>
+</html>

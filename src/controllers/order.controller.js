@@ -19,7 +19,7 @@ function renderError(res, status, title, message) {
 async function createOrder(req, res, next) {
   try {
     // order.routes.js에 있는 express-validator 결과 확인
-    const error = validationResult(req);
+    const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       const message = errors
@@ -86,7 +86,7 @@ async function showOrderHistory(req, res, next) {
   try{
     const userId = Number(req.user?.id);
 
-    if (!Number.isSafeInteger(useId) || userId < 1) {
+    if (!Number.isSafeInteger(userId) || userId < 1) {
       return renderError(res, 401, '로그인 필요', '로그인 정보가 올바르지 않습니다.');
     }
 
@@ -133,7 +133,7 @@ async function showOrderDetail(req, res, next) {
     }
     
     return res.render('orders/complete', {
-      title: '구매 완료',
+      title: '주문 상세',
 
       currentUser: res.locals.currentUser || null,
 
@@ -144,7 +144,7 @@ async function showOrderDetail(req, res, next) {
   }
 }
 
-module.export = {
+module.exports = {
   createOrder,
   showOrderHistory,
   showOrderDetail
