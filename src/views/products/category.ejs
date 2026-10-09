@@ -44,40 +44,45 @@
         <% products.forEach((product) => { %>
 
           <article class="product-card">
-            <% if (product.image_url) { %>
-              <img
-                class="product-image"
-                src="<%= product.image_url %>"
-                alt="<%= product.name %>"
-              >
-            <% } else { %>
-              <div class="product-image-placeholder">
-                이미지 준비 중
+            <a 
+              class="product-card-link"
+              href="/products/detail/<%= product.id %>"
+              aria-label="<%= product.name %> 상세 보기">
+              <% if (product.image_url) { %>
+                <img
+                  class="product-image"
+                  src="<%= product.image_url %>"
+                  alt="<%= product.name %>"
+                >
+              <% } else { %>
+                <div class="product-image-placeholder">
+                  이미지 준비 중
+                </div>
+              <% } %>
+
+              <div class="product-info">
+                <h2 class="product-name">
+                  <%= product.name %>
+                </h2>
+
+                <p class="product-description">
+                  <%= product.description || '상품 설명이 준비 중입니다.' %>
+                </p>
+
+                <p class="product-price">
+                  <%= Number(product.price).toLocaleString('ko-KR') %>원
+                </p>
+
+                <p class="product-stock">
+                  <% if (product.stock_quantity > 0) { %>
+                    재고:
+                    <%= product.stock_quantity %>개
+                  <% } else { %>
+                    품절
+                  <% } %>
+                </p>
               </div>
-            <% } %>
-
-            <div class="product-info">
-              <h2 class="product-name">
-                <%= product.name %>
-              </h2>
-
-              <p class="product-description">
-                <%= product.description || '상품 설명이 준비 중입니다.' %>
-              </p>
-
-              <p class="product-price">
-                <%= Number(product.price).toLocaleString('ko-KR') %>원
-              </p>
-
-              <p class="product-stock">
-                <% if (product.stock_quantity > 0) { %>
-                  재고:
-                  <%= product.stock_quantity %>개
-                <% } else { %>
-                  품절
-                <% } %>
-              </p>
-            </div>
+            </a>
           </article>
 
         <% }); %>

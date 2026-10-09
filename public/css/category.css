@@ -54,6 +54,17 @@
     box-shadow 0.2s ease;
 }
 
+.product-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.product-card-link:focus-visible {
+  outline: 3px solid #085ff6;
+  outline-offset: -3px;
+}
+
 .product-card:hover {
   transform: translateY(-5px);
   box-shadow:

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    <%= title %> | HANSEI 쇼핑몰
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/css/common.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/css/product-detail.css"
+  >
+</head>
+
+<body>
+  <main class="product-detail-container">
+    <nav class="product-navigation">
+      <a
+        href="/products?category=<%= product.category_slug %>"
+      >
+        ← <%= product.category_name %> 목록으로
+      </a>
+
+      <a href="/">
+        메인으로
+      </a>
+    </nav>
+
+    <section class="product-detail">
+      <div class="product-image-area">
+        <% if (product.image_url) { %>
+          <img
+            class="detail-product-image"
+            src="<%= product.image_url %>"
+            alt="<%= product.name %>"
+          >
+        <% } else { %>
+          <div class="detail-image-placeholder">
+            이미지 준비 중
+          </div>
+        <% } %>
+      </div>
+
+      <div class="product-information">
+        <p class="product-category">
+          <%= product.category_name %>
+        </p>
+
+        <h1>
+          <%= product.name %>
+        </h1>
+
+        <p class="product-description">
+          <%=
+            product.description ||
+            '상품 설명이 준비 중입니다.'
+          %>
+        </p>
+
+        <p class="product-price">
+          <%=
+            Number(product.price)
+              .toLocaleString('ko-KR')
+          %>원
+        </p>
+
+        <div class="product-stock">
+          <% if (product.stock_quantity > 0) { %>
+            <span class="stock-available">
+              재고 <%= product.stock_quantity %>개
+            </span>
+          <% } else { %>
+            <span class="stock-empty">
+              품절
+            </span>
+          <% } %>
+        </div>
+
+        <div class="purchase-area">
+          <% if (
+            typeof currentUser !== 'undefined' &&
+            currentUser
+          ) { %>
+
+            <p class="login-information">
+              <strong>
+                <%= currentUser.displayName %>
+              </strong>님
+            </p>
+
+            <label for="quantity">
+              구매 수량
+            </label>
+
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value="1"
+              min="1"
+              max="<%= product.stock_quantity %>"
+              disabled
+            >
+
+            <button
+              type="button"
+              class="purchase-button"
+              disabled
+            >
+              구매 기능 준비 중
+            </button>
+
+          <% } else { %>
+
+            <p class="login-required-message">
+              구매하려면 먼저 로그인해주세요.
+            </p>
+
+            <a
+              class="login-button"
+              href="/auth/login"
+            >
+              로그인
+            </a>
+
+          <% } %>
+        </div>
+      </div>
+    </section>
+
+    <section class="review-summary">
+      <h2>AI 리뷰 요약</h2>
+
+      <p>
+        아직 분석된 리뷰가 없습니다.
+      </p>
+    </section>
+
+    <section class="review-list">
+      <h2>구매자 리뷰</h2>
+
+      <p>
+        아직 등록된 리뷰가 없습니다.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

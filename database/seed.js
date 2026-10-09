@@ -35,7 +35,7 @@ const products = [
     description: '편안한 기본 후드 상품',
     price: 39900,
     stockQuantity: 20,
-    imageUrl: 'images/hood1.jfif'
+    imageUrl: '/images/hood1.jfif'
   },
   {
     categorySlug: 'knitwear',
@@ -91,7 +91,7 @@ const products = [
     description: '기본 디자인의 실버 목걸이',
     price: 24900,
     stockQuantity: 20,
-    imageUrl: '/images/nacklace1.jfif'
+    imageUrl: '/images/necklace1.jfif'
   },
   {
     categorySlug: 'ring',

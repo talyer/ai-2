@@ -171,6 +171,51 @@ router.get(
   }
 );
 
+
+
+// 상품 상세 화면
+router.get('/products/detail/:productId',
+  async (req, res, next) => {
+    try {
+      const productId = Number(req.params.productId);
+
+      // 상품 번호가 양의 정수가 아니면 잘못된 요청으로 처리 
+      if (!Number.isSafeInteger(productId) || productId < 1) {
+        return res.status(400).render('errors/error',
+          {
+            title: '잘못된 상품 번호',
+            message: '상품 번호가 올바르지 않습니다.'
+          }
+        );
+      }
+
+      const product = await productRepository
+        .findActiveById(productId);
+
+      // DB에 해당 상품이 없거나 비활성 상품이면 404 반환
+      if (!product) {
+        return res.status(404).render('errors/error',
+          {
+            tittle: '상품 없음',
+            message: '요청한 상품을 찾을 수 없습니다.'
+          }
+        );
+      }
+
+      return res.render('products/detail',
+        {
+          title: product.name,
+          product,
+
+          currentUser: getCurrentUser(res)
+        }
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
 /*
 현재 index.ejs에서 사용하는 주소
 
