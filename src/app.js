@@ -20,6 +20,8 @@ const pageRoutes =
 const authRoutes =
   require('./routes/auth.routes');
 
+const orderRoutes = require('./routes/order.routes');
+
 const currentUserMiddleware =
   require('./middleware/current-user.middleware');
 
@@ -109,6 +111,8 @@ app.use('/security/bot', botRoutes);
 app.use(currentUserMiddleware);
 
 app.use('/auth', authRoutes);
+
+app.use('/orders', orderRoutes);
 
 app.use('/', pageRoutes);
 

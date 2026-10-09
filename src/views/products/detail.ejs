@@ -93,50 +93,65 @@
             currentUser
           ) { %>
 
-            <p class="login-information">
-              <strong>
-                <%= currentUser.displayName %>
-              </strong>님
-            </p>
+            <% if (product.stock_quantity > 0) { %>
+              <form
+                method="post"
+                action="/orders"
+                class="purchase-form"
+              >
+                <input
+                  type="hidden"
+                  name="productId"
+                  value="<%= product.id %>">
+                
+                  <label for="quantity">
+                  구매 수량
+                </label>
 
-            <label for="quantity">
-              구매 수량
-            </label>
+                <input
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  max="<%= product.stock_quantity %>"
+                  required
+                >
 
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              value="1"
-              min="1"
-              max="<%= product.stock_quantity %>"
-              disabled
-            >
-
+                <button
+                  type="submit"
+                  class="purchase-button"
+                >
+                  구매하기
+                </button>
+            </form>
+          <% } else { %>
+            
             <button
               type="button"
               class="purchase-button"
               disabled
             >
-              구매 기능 준비 중
+              품절
             </button>
-
-          <% } else { %>
-
-            <p class="login-required-message">
-              구매하려면 먼저 로그인해주세요.
-            </p>
-
-            <a
-              class="login-button"
-              href="/auth/login"
-            >
-              로그인
-            </a>
-
           <% } %>
-        </div>
+
+        <% } else { %>
+
+          <p class="login-required-message">
+            구매하려면 먼저 로그인해주세요.
+          </p>
+
+          <a
+            class="login-button"
+            href="/auth/login"
+          >
+            로그인
+          </a>
+
+        <% } %>
       </div>
+    </div>
     </section>
 
     <section class="review-summary">
