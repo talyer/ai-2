@@ -62,10 +62,31 @@ CSRF 적용으로 인해 Helmet 적용시킴
 */
 app.use(
   helmet({
-    contentSecurityPolicy: false
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        /*
+        ALTCHA 기본 번들 내부 스타일 때문에
+        현재 단계에서는 스타일만 예외 처리합니다.
+        */
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        /*
+        ALTCHA 계산용 Web Worker를 허용합니다.
+        */
+        workerSrc: ["'self'", 'blob:'],
+        childSrc: ["'self'", 'blob:'],
+        imgSrc: ["'self'", 'data:'],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"]
+      }
+    }
   })
 );
-
 
 
 
