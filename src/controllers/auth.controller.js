@@ -126,7 +126,10 @@ if (!user) {
   res.cookie('access_token', token, {
     httpOnly: true,
     secure: env.cookieSecure,
-    sameSite: 'lax'
+    sameSite: 'lax',
+    // 추가
+    path: '/',
+    maxAge: 2 * 60 * 60 * 1000
   });
 
   return res.redirect('/');

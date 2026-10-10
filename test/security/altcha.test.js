@@ -23,6 +23,63 @@ const {
 const app =
   require('../../src/app');
 
+function extractCsrfToken(html) {
+  const match = html.match(/name="_csrf"\s+value="([^"]+)"/);
+
+  if (!match) {
+    throw new Error('HTML에서 CSRF 토큰을 찾지 못했습니다.');
+  }
+  return match[1];
+}
+
+test('CSRF 토큰이 없으면 회원가입 요청을 차단한다.',
+  async () => {
+    const response = await request(app)
+      .post('/auth/signup')
+      .type('form')
+      .send({
+        displayName: '테스트',
+        loginId: 'testuser',
+        email: 'test@example.com',
+        password: 'Password123!'
+      });
+
+      expect(response.status).toBe(403);
+  }
+);
+
+test('정상 CSRF 토큰은 통과한다.', 
+  async () => {
+    const agent = request.agent(app);
+
+    const pageResponse = await agent
+      .get('/auth/signup')
+      .expect(200);
+
+    const csrfToken = extractCsrfToken(pageResponse.text);
+
+    const response = await agent
+      .post('/auth/signup')
+      .type('form')
+      .send({
+        displayName: '',
+        loginId: '',
+        email: 'invalid-email',
+        password: '',
+        _csrf: csrfToken
+      });
+
+    // 403이 아니라면 CSRF 검증 통과
+    // 회원가입 입력값 검증에서 거부 될 수 있음
+    expect(response.status).not.toBe(403);
+  }
+)
+
+
+  
+
+
+
 const {
   closeDatabasePool
 } = require(

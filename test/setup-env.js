@@ -9,3 +9,8 @@ process.env.SOC_ENABLED = 'false';
 process.env.SOC_AI_ENABLED = 'false';
 
 process.env.SOC_DEMO_MODE = 'false';
+
+process.env.CSRF_SECRET = 'c'.repeat(64);
+
+// NAS에 연결되면 여기 부분 교체
+process.env.APP_ORIGIN = 'http://localhost:3000';

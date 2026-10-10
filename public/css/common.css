@@ -221,3 +221,33 @@ button{
     /* 글자설정은 컨텐츠를 감싼 최종태그에 처리 */
     color: #ccc;
 }
+
+.site-navigation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.current-user {
+  color: #333;
+  font-weight: 600;
+}
+
+.logout-form {
+  display: inline;
+  margin: 0;
+}
+
+.logout-button {
+  padding: 6px 12px;
+  border: 1px solid #d33;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #d33;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #d33;
+  color: #fff;
+}

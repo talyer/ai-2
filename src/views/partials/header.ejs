@@ -17,11 +17,37 @@
       <a class = "logo" href="/">
         AI Fashion Review
       </a>
-      <nav>
+      <nav class ='site-naviagtion'>
         <a href="/">홈</a>
         <a href="/products">상품</a>
         <a href="/auth/login">로그인</a>
-      </nav>
 
+        <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+
+          <a href="/orders/history">주문 내역</a>
+
+          <span class = "current-user">
+            <%= currentUser.displayName || currentUser.loginId %>님
+          </span>
+
+          <form
+            method="post"
+            action="/auth/logout"
+            class="logout-form">
+            <input
+              type="hidden"
+              name="_csrf"
+              value="<%= typeof csrfToken !== 'underfined' ? csrfToken : '' %>">
+
+              <button 
+                type="submit"
+                class="logout-button">로그아웃</button>
+          </form>
+        <% } else { %>
+          <a href="/auth/signup">회원가입</a>
+
+          <a href="/auth/login">로그인</a>
+        <% } %>
+      </nav>
     </div>
   </header>

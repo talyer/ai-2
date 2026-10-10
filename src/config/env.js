@@ -9,6 +9,8 @@ const requiredVariables = [ // .env 내용 호출
   'DB_USER',
   'DB_PASSWORD',
   'JWT_SECRET',
+  'CSRF_SECRET',
+  'APP_ORIGIN'
 ];
 
 for (const variable of requiredVariables) {
@@ -21,6 +23,12 @@ for (const variable of requiredVariables) {
 if (process.env.JWT_SECRET.length < 32) {
   throw new Error(
     'JWT_SECRET은 32자 이상이어야 합니다.'
+  );
+}
+
+if (process.env.CSRF_SECRET.length < 32) {
+  throw new Error(
+    'CSRF_SECRET은 32자 이상이어야 합니다.'
   );
 }
 
@@ -90,6 +98,8 @@ const env = Object.freeze ({
   nodeEnv : process.env.NODE_ENV || 'development',
   port,
 
+  appOrigin: process.env.APP_ORIGIN,
+
   database : {
     host : process.env.DB_HOST,
     port : databasePort,
@@ -102,6 +112,10 @@ const env = Object.freeze ({
   jwt : {
     secret : process.env.JWT_SECRET,
     expiresIn : process.env.JWT_EXPIRES_IN || '2h'
+  },
+
+  csrf: {
+    secret: process.env.CSRF_SECRET
   },
 
   cookieSecure : process.env.COOKIE_SECURE == 'true',

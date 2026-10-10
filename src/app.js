@@ -14,6 +14,11 @@ const {
   env
 } = require('./config/env');
 
+const { attachCsrfToken, verifyCsrfToken } = require('./middleware/csrf.middleware');
+
+const requestOriginMiddleware = require('./middleware/request-origin.middleware');
+
+
 const pageRoutes =
   require('./routes/page.routes');
 
@@ -51,10 +56,23 @@ if (env.trustProxy) {
 현재 index.ejs에 인라인 style과 script가 있으므로
 CSP만 임시로 비활성화합니다.
 그 외 Helmet 보안 헤더는 적용됩니다.
+CSRF 적용으로 인해 Helmet 적용시킴
 */
 app.use(
   helmet({
-    contentSecurityPolicy: false
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:'],
+        connectSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"]
+      }
+    }
   })
 );
 
@@ -64,11 +82,6 @@ if (env.nodeEnv === 'development') {
   );
 }
 
-app.use(
-  express.json({
-    limit: '20kb'
-  })
-);
 
 app.use(
   express.urlencoded({
@@ -76,6 +89,13 @@ app.use(
     limit: '20kb'
   })
 );
+
+app.use(
+  express.json({
+    limit: '20kb'
+  })
+);
+
 
 app.use(
   cookieParser()
@@ -109,6 +129,14 @@ app.use(
 app.use('/security/bot', botRoutes);
 
 app.use(currentUserMiddleware);
+
+app.use(attachCsrfToken);
+
+app.use(requestOriginMiddleware);
+app.use(verifyCsrfToken);
+
+
+
 
 app.use('/auth', authRoutes);
 
