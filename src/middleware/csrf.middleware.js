@@ -76,17 +76,41 @@ function attachCsrfToken(req, res, next) {
   return next();
 }
 
-function rejectCsrfRequest(req, res) {
-  console.warn('[CSRF 차단]',
-    req.method,
-    req.originalUrl,
-    req.ip
-  );
+// function rejectCsrfRequest(req, res) {
+//   console.warn('[CSRF 차단]',
+//     req.method,
+//     req.originalUrl,
+//     req.ip
+//   );
 
-  return res.status(403).render('errors/error', {
-    title: '요청 거부',
-    message: '보안 토큰이 없거나 올바르지 않습니다.'
+//   return res.status(403).render('errors/error', {
+//     title: '요청 거부',
+//     message: '보안 토큰이 없거나 올바르지 않습니다.'
+//   });
+// }
+
+function rejectCsrfRequest(req, res) {
+  console.warn('[CSRF 차단]', {
+    method: req.method,
+    path: req.originalUrl,
+    hasCsrfCookie: Boolean(
+      req.cookies?.csrf_session
+    ),
+    hasCsrfBodyToken: Boolean(
+      req.body?._csrf
+    ),
+    origin: req.get('origin'),
+    referer: req.get('referer')
   });
+
+  return res.status(403).render(
+    'errors/error',
+    {
+      title: '요청 거부',
+      message:
+        '보안 토큰이 없거나 올바르지 않습니다.'
+    }
+  );
 }
 
 function verifyCsrfToken(req, res, next) {
