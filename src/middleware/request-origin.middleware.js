@@ -28,7 +28,7 @@ function requestOriginMiddleware(req, res, next) {
 
   if (origin) {
     try {
-      if (new URL(origin).orign !== allowedOrigin) {
+      if (new URL(origin).origin !== allowedOrigin) {
         return rejectRequest(res);
       }
     } catch (error) {

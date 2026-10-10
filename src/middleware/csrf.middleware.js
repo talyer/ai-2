@@ -39,7 +39,7 @@ function getOrCreateCsrfSession(req, res) {
 // 로그인 전에 anonymous로, 후에는 access_token으로 묶음
 
 function createSessionBinding(req, csrfSession) {
-  const accesToken = String(
+  const accessToken = String(
     req.cookies?.access_token || 'anonymous'
   );
 
@@ -71,7 +71,7 @@ function attachCsrfToken(req, res, next) {
 
   req.csrfSessionBinding = sessionBinding;
 
-  req.locals.csrfToken = createCsrfToken(sessionBinding);
+  res.locals.csrfToken = createCsrfToken(sessionBinding);
 
   return next();
 }
@@ -112,7 +112,7 @@ function verifyCsrfToken(req, res, next) {
 
   const expectedBuffer = Buffer.from(expectedSignature, 'hex');
 
-  if (providedBuffer.length !== expectedBuffer.length || !timingSafeEqaul(providedBuffer, expectedBuffer)) {
+  if (providedBuffer.length !== expectedBuffer.length || !timingSafeEqual(providedBuffer, expectedBuffer)) {
     return rejectCsrfRequest(req, res);
   }
 

@@ -27,6 +27,8 @@ const authRoutes =
 
 const orderRoutes = require('./routes/order.routes');
 
+const reviewRoutes = require('./routes/review.routes');
+
 const currentUserMiddleware =
   require('./middleware/current-user.middleware');
 
@@ -60,21 +62,14 @@ CSRF 적용으로 인해 Helmet 적용시킴
 */
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'"],
-        imgSrc: ["'self'", 'data:'],
-        connectSrc: ["'self'"],
-        objectSrc: ["'none'"],
-        baseUri: ["'self'"],
-        formAction: ["'self'"],
-        frameAncestors: ["'none'"]
-      }
-    }
+    contentSecurityPolicy: false
   })
 );
+
+
+
+
+
 
 if (env.nodeEnv === 'development') {
   app.use(
@@ -141,6 +136,8 @@ app.use(verifyCsrfToken);
 app.use('/auth', authRoutes);
 
 app.use('/orders', orderRoutes);
+
+app.use('/reviews', reviewRoutes);
 
 app.use('/', pageRoutes);
 
