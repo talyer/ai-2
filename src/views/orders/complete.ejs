@@ -78,6 +78,32 @@
           </dd>
         </div>
       </dl>
+      
+      <% if (order.status === 'PENDING') { %>
+        <section class ="purchase-confirm-box">
+          <h2>구매확정</h2>
+          <p>실제 상품을 받은 것으로 처리하고 리뷰 작성을 활성화합니다.</p>
+          <form 
+            method="post"
+            action="/orders/<%= order.order_number %>/confirm"
+          >
+            <input
+              type="hidden"
+              name="_csrf"
+              value="<%= csrfToken %>"
+            >
+
+            <button 
+              type="submit"
+              class="confirm-order-button"
+            >구매확정</button>
+          </form>
+        </section>
+      <% } else if (order.status === 'DELIVERED') { %>
+        <section class="purchase-confirmed-box">
+          <p>구매확정이 완료된 주문입니다.ㄴ</p>
+        </section>
+      <% } %>  
 
       <section class="order-items">
         <h2>주문 상품</h2>
@@ -113,6 +139,7 @@
                       .toLocaleString('ko-KR')
                   %>원
                 </p>
+                // 여기다가 코드 추가
               </div>
             </article>
           <% }); %>

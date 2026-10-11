@@ -329,10 +329,7 @@ async function findByOrderNumberAndUserId(
         AND user_id = ?
       LIMIT 1
       `,
-      [
-        orderNumber,
-        userId
-      ]
+      [orderNumber, userId]
     );
 
   if (orders.length === 0) {
@@ -355,6 +352,8 @@ async function findByOrderNumberAndUserId(
       FROM order_items AS oi
       LEFT JOIN products AS p
         ON p.id = oi.product_id
+      LEFT JOIN reviews A r
+        ON r.order_item_id = oi.id
       WHERE oi.order_id = ?
       ORDER BY oi.id ASC
       `,
@@ -367,8 +366,77 @@ async function findByOrderNumberAndUserId(
   };
 }
 
+async function confirmOrderBynumberAndUserId(orderNumber, userId) {
+  const connection = await pool.getConnection();
+
+  let transactionStarted = false;
+
+  try {
+    await connection.beginTransaction();
+    transactionStarted = true;
+
+    const [orders] = await connection.execute(
+      `
+      SELECT
+        id,
+        order_number,
+        status
+      FROM orders
+      WHERE order_number = ?
+        AND user_id = ?
+      LIMIT 1
+      FOR UPDATE
+      `,
+      [orderNumber, userId]
+    );
+
+    if (orders.length === 0) {
+      throw createOrderError('ORDER_NOT_FOUND', '주문을 찾을 수 없습니다.');
+    }
+    const order = orders[0];
+
+    // 이미 구매확정이면 중복 처리 방지 
+    if (order.status === 'DELIVERED') {
+      await connection.commit();
+      transactionStarted = false;
+
+      return order;
+    }
+
+    // 현재 프로젝트에서는 PENDING 상태만 구매 확정 됨
+    // 즉, 실제 구매 기능은 제거
+    if (order.status != 'PENDING') {
+      throw createOrderError('INVALID_ORDER_STATUS', '현재 상태에서는 구매확정할 수 없습니다.');
+    }
+
+    await connection.execute(
+      `
+      UPDATE orders
+      SET status = 'DELIVERED'
+      WHERE id = ?
+        AND user_id = ?
+        AND status = 'PENDING'
+      `,
+      [order.id, userId]
+    );
+
+    await connection.commit();
+    transactionStarted = false;
+
+    return {...order, status: 'DELIVERED'};
+  } catch (error) {
+    if (transactionStarted) {
+      await connection.rollback();
+    }
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
 module.exports = {
   createOrder,
   findAllByUserId,
-  findByOrderNumberAndUserId
+  findByOrderNumberAndUserId,
+  confirmOrderBynumberAndUserId
 };

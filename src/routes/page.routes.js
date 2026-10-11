@@ -196,7 +196,7 @@ router.get('/products/detail/:productId',
       if (!product) {
         return res.status(404).render('errors/error',
           {
-            tittle: '상품 없음',
+            title: '상품 없음',
             message: '요청한 상품을 찾을 수 없습니다.'
           }
         );

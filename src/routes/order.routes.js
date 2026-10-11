@@ -31,8 +31,14 @@ router.post('/', authMiddleware,
 
 router.get('/history', authMiddleware, orderController.showOrderHistory);
 
+// 구매확정 라우터 추가
+
+router.post('/:orderNumber/confirm', authMiddleware, orderController.confirmOrder);
+
 // 내 주문 상세
 
 router.get('/:orderNumber', authMiddleware, orderController.showOrderDetail);
+
+
 
 module.exports = router;

@@ -144,8 +144,39 @@ async function showOrderDetail(req, res, next) {
   }
 }
 
+async function confirmOrder(req, res, next) {
+  try {
+    const userId = Number(req.user?.id);
+
+    const orderNumber = String(req.params.orderNumber || '').trim();
+
+    if (!Number.isSafeInteger(userId) || userId < 1) {
+      return renderError(res, 401, '로그인 필요', '로그인 정보가 올바르지 않습니다.');
+    }
+    if (!/^[A-Za-z0-9-]{8,50}$/.test(orderNumber)) {
+      return renderError(res, 400, '잘못된 주문번호', '주문번호 형식이 올바르지 않습니다.');
+    }
+
+    await orderRepository.confirmOrderByNumberAndUserId(orderNumber, userId);
+
+    return res.redirect(303, `/orders/${encodeURIComponent(orderNumber)}`);
+  } catch (error) {
+    if (error.code === 'ORDER_NOT_FOUND') {
+      return renderError(res, 404, '주문 없음', '주문을 찾을 수 없습니다.');
+    }
+
+    if (error.code === 'INVALID_ORDER_STATUS') {
+      return renderError(res, 409, '구매확정 불가', error.message);
+    }
+
+    return next(error);
+  }
+}
+
+
 module.exports = {
   createOrder,
   showOrderHistory,
-  showOrderDetail
+  showOrderDetail,
+  confirmOrder
 };
