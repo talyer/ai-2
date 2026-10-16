@@ -8,24 +8,102 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>
-    <%= title %> | HANSEI 쇼핑몰
-  </title>
+  <title><%= title %> | HANSEI 쇼핑몰</title>
 
-  <link
-    rel="stylesheet"
-    href="/css/common.css"
-  >
-
-  <link
-    rel="stylesheet"
-    href="/css/product-detail.css"
-  >
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/product-detail.css">
 </head>
 
 <body>
+  <%
+    /*
+    image_url과 image_path 중
+    현재 DB에 존재하는 값을 사용합니다.
+    */
+    const productImage =
+      product.image_url ||
+      product.image_path ||
+      '';
+
+    /*
+    reviews가 전달되지 않아도
+    화면이 오류 없이 열리도록 처리합니다.
+    */
+    const safeReviews =
+      typeof reviews !== 'undefined' &&
+      Array.isArray(reviews)
+        ? reviews
+        : [];
+
+    /*
+    별점 평균을 계산합니다.
+    */
+    const calculatedAverage =
+      safeReviews.length > 0
+        ? safeReviews.reduce(
+            (total, review) =>
+              total + Number(review.rating || 0),
+            0
+          ) / safeReviews.length
+        : 0;
+
+    const reviewCount =
+      typeof reviewStats !== 'undefined' &&
+      reviewStats
+        ? Number(
+            reviewStats.count ||
+            safeReviews.length
+          )
+        : safeReviews.length;
+
+    const averageRating =
+      typeof reviewStats !== 'undefined' &&
+      reviewStats &&
+      reviewStats.averageRating !== null &&
+      typeof reviewStats.averageRating !== 'undefined'
+        ? Number(reviewStats.averageRating)
+        : calculatedAverage;
+
+    /*
+    사용자 이름 컬럼명이 달라도
+    출력할 수 있도록 처리합니다.
+    */
+    function getReviewerName(review) {
+      return (
+        review.displayName ||
+        review.display_name ||
+        review.name ||
+        '구매자'
+      );
+    }
+
+    function formatReviewDate(value) {
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      return date.toLocaleDateString('ko-KR');
+    }
+
+    function formatDateTime(value) {
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      return date.toISOString();
+    }
+  %>
+
   <main class="product-detail-container">
-    <nav class="product-navigation">
+    <!-- 상품 페이지 상단 이동 메뉴 -->
+    <nav
+      class="product-navigation"
+      aria-label="상품 페이지 이동"
+    >
       <a
         href="/products?category=<%= product.category_slug %>"
       >
@@ -37,12 +115,13 @@
       </a>
     </nav>
 
+    <!-- 상품 상세 정보 -->
     <section class="product-detail">
       <div class="product-image-area">
-        <% if (product.image_url) { %>
+        <% if (productImage) { %>
           <img
             class="detail-product-image"
-            src="<%= product.image_url %>"
+            src="<%= productImage %>"
             alt="<%= product.name %>"
           >
         <% } else { %>
@@ -75,8 +154,11 @@
           %>원
         </p>
 
+        <!-- 재고 정보 -->
         <div class="product-stock">
-          <% if (product.stock_quantity > 0) { %>
+          <% if (
+            Number(product.stock_quantity) > 0
+          ) { %>
             <span class="stock-available">
               재고 <%= product.stock_quantity %>개
             </span>
@@ -87,29 +169,39 @@
           <% } %>
         </div>
 
+        <!-- 구매 영역 -->
         <div class="purchase-area">
           <% if (
             typeof currentUser !== 'undefined' &&
             currentUser
           ) { %>
 
-            <% if (product.stock_quantity > 0) { %>
+            <% if (
+              Number(product.stock_quantity) > 0
+            ) { %>
               <form
                 method="post"
                 action="/orders"
                 class="purchase-form"
               >
+                <!-- CSRF 방어 토큰 -->
                 <input
                   type="hidden"
                   name="_csrf"
-                  value="<%= csrfToken%>"
-                  >
+                  value="<%=
+                    typeof csrfToken !== 'undefined'
+                      ? csrfToken
+                      : ''
+                  %>"
+                >
+
                 <input
                   type="hidden"
                   name="productId"
-                  value="<%= product.id %>">
-                
-                  <label for="quantity">
+                  value="<%= product.id %>"
+                >
+
+                <label for="quantity">
                   구매 수량
                 </label>
 
@@ -129,50 +221,270 @@
                 >
                   구매하기
                 </button>
-            </form>
+              </form>
+            <% } else { %>
+              <button
+                type="button"
+                class="purchase-button"
+                disabled
+              >
+                품절
+              </button>
+            <% } %>
+
           <% } else { %>
-            
-            <button
-              type="button"
-              class="purchase-button"
-              disabled
+            <p class="login-required-message">
+              구매하려면 먼저 로그인해주세요.
+            </p>
+
+            <a
+              class="login-button"
+              href="/auth/login"
             >
-              품절
-            </button>
+              로그인
+            </a>
           <% } %>
+        </div>
+      </div>
+    </section>
 
-        <% } else { %>
+    <!-- 리뷰 전체 영역 -->
+    <section
+      class="product-review-section"
+      id="reviews"
+    >
+      <!-- 리뷰 등록 완료 메시지 -->
+      <% if (
+        typeof reviewCreated !== 'undefined' &&
+        reviewCreated
+      ) { %>
+        <div
+          class="review-success-alert"
+          role="status"
+        >
+          <span
+            class="review-success-icon"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
 
-          <p class="login-required-message">
-            구매하려면 먼저 로그인해주세요.
+          <div>
+            <strong>
+              리뷰가 등록되었습니다.
+            </strong>
+
+            <p>
+              작성한 리뷰를 아래에서 확인할 수 있습니다.
+            </p>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- 리뷰 제목 -->
+      <div class="review-section-heading">
+        <div>
+          <p class="review-heading-label">
+            CUSTOMER REVIEW
           </p>
 
-          <a
-            class="login-button"
-            href="/auth/login"
-          >
-            로그인
-          </a>
+          <h2>
+            구매자 리뷰
+          </h2>
+        </div>
 
+        <p class="review-count">
+          총 <strong><%= reviewCount %></strong>개
+        </p>
+      </div>
+
+      <!-- 평균 별점과 AI 요약 -->
+      <div class="review-overview">
+        <div class="review-score-box">
+          <span class="review-score-label">
+            평균 별점
+          </span>
+
+          <strong class="review-average-score">
+            <%= averageRating.toFixed(1) %>
+          </strong>
+
+          <div
+            class="review-average-stars"
+            aria-label="평균 별점 <%= averageRating.toFixed(1) %>점"
+          >
+            <% for (
+              let star = 1;
+              star <= 5;
+              star += 1
+            ) { %>
+              <span
+                class="<%=
+                  star <= Math.round(averageRating)
+                    ? 'active'
+                    : ''
+                %>"
+                aria-hidden="true"
+              >
+                ★
+              </span>
+            <% } %>
+          </div>
+
+          <span class="review-score-count">
+            <%= reviewCount %>명의 구매자 평가
+          </span>
+        </div>
+
+        <!-- AI 리뷰 요약 -->
+        <article class="ai-review-summary-card">
+          <div class="ai-review-title">
+            <span class="ai-badge">
+              AI
+            </span>
+
+            <h3>
+              리뷰 핵심 요약
+            </h3>
+          </div>
+
+          <% if (
+            typeof aiReviewSummary !== 'undefined' &&
+            aiReviewSummary
+          ) { %>
+            <p>
+              <%= aiReviewSummary %>
+            </p>
+          <% } else if (reviewCount > 0) { %>
+            <p>
+              등록된 리뷰를 바탕으로 감정,
+              주요 키워드와 핵심 내용을
+              분석할 예정입니다.
+            </p>
+          <% } else { %>
+            <p>
+              리뷰가 쌓이면 AI가 감정과
+              주요 키워드를 분석해 핵심 내용을
+              보여드립니다.
+            </p>
+          <% } %>
+
+          <div class="ai-analysis-status">
+            <span
+              class="status-dot"
+              aria-hidden="true"
+            ></span>
+
+            CLOVA Studio 분석 영역
+          </div>
+        </article>
+      </div>
+
+      <!-- 개별 리뷰 목록 -->
+      <div class="review-list-area">
+        <% if (safeReviews.length > 0) { %>
+          <div class="review-card-list">
+            <% safeReviews.forEach((review) => { %>
+              <article class="review-card">
+                <header class="review-card-header">
+                  <div class="review-author">
+                    <span
+                      class="review-author-avatar"
+                      aria-hidden="true"
+                    >
+                      <%=
+                        getReviewerName(review)
+                          .charAt(0)
+                      %>
+                    </span>
+
+                    <div>
+                      <strong class="review-author-name">
+                        <%= getReviewerName(review) %>
+                      </strong>
+
+                      <span class="verified-purchase">
+                        구매 확인
+                      </span>
+                    </div>
+                  </div>
+
+                  <time
+                    class="review-date"
+                    datetime="<%=
+                      formatDateTime(
+                        review.created_at
+                      )
+                    %>"
+                  >
+                    <%=
+                      formatReviewDate(
+                        review.created_at
+                      )
+                    %>
+                  </time>
+                </header>
+
+                <!-- 리뷰 별점 -->
+                <div class="review-rating-row">
+                  <div
+                    class="review-stars"
+                    aria-label="별점 <%= Number(review.rating) %>점"
+                  >
+                    <% for (
+                      let star = 1;
+                      star <= 5;
+                      star += 1
+                    ) { %>
+                      <span
+                        class="<%=
+                          star <= Number(review.rating)
+                            ? 'active'
+                            : ''
+                        %>"
+                        aria-hidden="true"
+                      >
+                        ★
+                      </span>
+                    <% } %>
+                  </div>
+
+                  <strong class="review-rating-number">
+                    <%=
+                      Number(review.rating)
+                        .toFixed(1)
+                    %>
+                  </strong>
+                </div>
+
+                <!-- XSS 방어를 위해 <%= %> 사용 -->
+                <p class="review-content">
+                  <%= review.content %>
+                </p>
+              </article>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <!-- 리뷰가 없을 때 -->
+          <div class="empty-review-box">
+            <span
+              class="empty-review-icon"
+              aria-hidden="true"
+            >
+              ♡
+            </span>
+
+            <h3>
+              아직 등록된 리뷰가 없습니다.
+            </h3>
+
+            <p>
+              상품을 구매하고 구매확정을 완료한 뒤
+              첫 번째 리뷰를 작성해보세요.
+            </p>
+          </div>
         <% } %>
       </div>
-    </div>
-    </section>
-
-    <section class="review-summary">
-      <h2>AI 리뷰 요약</h2>
-
-      <p>
-        아직 분석된 리뷰가 없습니다.
-      </p>
-    </section>
-
-    <section class="review-list">
-      <h2>구매자 리뷰</h2>
-
-      <p>
-        아직 등록된 리뷰가 없습니다.
-      </p>
     </section>
   </main>
 </body>

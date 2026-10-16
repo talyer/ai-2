@@ -15,6 +15,8 @@ const router = express.Router();
 
 const productRepository = require('../repositories/product.repository');
 
+const reviewRepository = require('../repositories/review.repository');
+
 
 /*
 상품 카테고리 허용 목록
@@ -202,12 +204,38 @@ router.get('/products/detail/:productId',
         );
       }
 
+      // 상품의 공개 상태 리뷰를 조회
+      const reviews = await reviewRepository.findVisibleByProductId(productId);
+
+      // 평점이 있는 리뷰만 이용해 평균 평점 계산
+      const ratedReviews = reviews.filter(
+        (review) => Number.isFinite(Number(review.rating))
+      );
+
+      let averageRating = null;
+
+      if (ratedReviews.length > 0) {
+        const ratingTotal = ratedReviews.reduce(
+          (total, review) => total + Number(review.rating), 0
+        );
+
+        averageRating = (ratingTotal / ratedReviews.length).toFixed(1);
+      }
+
       return res.render('products/detail',
         {
           title: product.name,
           product,
 
-          currentUser: getCurrentUser(res)
+          currentUser: getCurrentUser(res),
+
+          reviews,
+          reviewStats: {
+            count: reviews.length,
+            averageRating
+          },
+
+          reviewCreated: req.query.review === 'created'
         }
       );
     } catch (error) {
