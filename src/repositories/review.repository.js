@@ -2,7 +2,7 @@
 
 const { pool } = require('../config/database');
 
-function createReivewError(code, message) {
+function createReviewError(code, message) {
   const error = new Error(message);
   error.code = code;
 
@@ -40,7 +40,7 @@ async function createReview({userId, orderItemId, rating, content}) {
     );
 
     if (items.length === 0) {
-      throw createReviewError('PURCHASE_NOT_FOUND', '리뷰를 작성할 수 있는 구매 내역이 없습니다.');ㄴ
+      throw createReviewError('PURCHASE_NOT_FOUND', '리뷰를 작성할 수 있는 구매 내역이 없습니다.');
     }
 
     const item = items[0];
@@ -101,7 +101,7 @@ async function createReview({userId, orderItemId, rating, content}) {
 }
 
 async function findVisibleByProductId(productId) {
-  consst [rows] = await pool.execute(
+  const [rows] = await pool.execute(
     `
     SELECT 
       r.id,

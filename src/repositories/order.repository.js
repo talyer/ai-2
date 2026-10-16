@@ -368,7 +368,7 @@ async function findByOrderNumberAndUserId(
 }
 
 // 이 부분 오류로 수정을 해야 함
-async function confirmOrderBynumberAndUserId(orderNumber, userId) {
+async function confirmOrderByNumberAndUserId(orderNumber, userId) {
   const connection = await pool.getConnection();
 
   let transactionStarted = false;
@@ -440,5 +440,5 @@ module.exports = {
   createOrder,
   findAllByUserId,
   findByOrderNumberAndUserId,
-  confirmOrderBynumberAndUserId
+  confirmOrderByNumberAndUserId
 };
