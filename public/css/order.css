@@ -111,3 +111,60 @@
     flex-direction: column;
   }
 }
+
+.purchase-confirm-box,
+.purchase-confirmed-box {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #d6e2ff;
+  border-radius: 10px;
+  background-color: #f5f8ff;
+}
+
+.confirm-order-button,
+.review-submit-button {
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 7px;
+  background-color: #085ff6;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.review-form {
+  width: 100%;
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  background-color: #fafafa;
+}
+
+.review-field {
+  margin-bottom: 14px;
+}
+
+.review-field label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 700;
+}
+
+.review-field select,
+.review-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+.review-waiting-message {
+  color: #666;
+}
+
+.review-completed-message {
+  color: #14843c;
+  font-weight: 700;
+}

@@ -139,7 +139,66 @@
                       .toLocaleString('ko-KR')
                   %>원
                 </p>
-                // 여기다가 코드 추가
+                <% if (order.status !== 'DELIVERED') { %>
+                  <p class="review-waiting-message">구매 확정 후 리뷰를 작성할 수 있습니다.</p>
+                  
+                <% } else if (item.review_id) { %>
+                  <p class="review-completed-message">리뷰 작성 완료</p>
+                
+                <% } else { %>
+                  <form 
+                    method="post"
+                    action="/reviews"
+                    class="review-form"
+                  >
+                    <input
+                      type="hidden"
+                      name="_csrf"
+                      value="<%= csrfToken %>"
+                    >
+
+                    <input
+                      type="hidden"
+                      name="orderItemId"
+                      value="<%= item.id %>"
+                    >
+
+                    <div class="review-field">
+                      <label for="rating-<%= item.id %>">평점</label>
+                      
+                      <select 
+                        id="rating-<%= item.id %>"
+                        name="rating"
+                        required
+                      >
+                        <option value="">평점을 선택해주세요.</option>
+                        <option vlaue="5">5점 - 매우 만족</option>
+                        <option vlaue="4">4점 - 만족</option>
+                        <option vlaue="3">3점 - 보통</option>
+                        <option vlaue="2">2점 - 불만족</option>
+                        <option vlaue="1">1점 - 매우 불만족</option>
+                      </select>
+                    </div>
+
+                    <div class="review-field">
+                      <label for="conetent-<%= item.id %>">리뷰 내용</label>
+                    
+                    <textarea
+                      id="content-<%= item.id%>"
+                      name="content"
+                      minlength="2"
+                      maxlength="2000"
+                      rows="5"
+                      placeholder="상품에 대한 리뷰를 작성해주세요."
+                      required>
+                      </textarea>
+                    </div>
+
+                    <button
+                      type="submit"
+                      class="review-submit-button">리뷰 등록</button>  
+                  </form>
+                <% } %>
               </div>
             </article>
           <% }); %>

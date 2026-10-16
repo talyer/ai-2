@@ -348,11 +348,12 @@ async function findByOrderNumberAndUserId(
         oi.product_name_snapshot,
         oi.quantity,
         oi.unit_price,
-        p.image_url
+        p.image_url,
+        r.id AS review_id
       FROM order_items AS oi
       LEFT JOIN products AS p
         ON p.id = oi.product_id
-      LEFT JOIN reviews A r
+      LEFT JOIN reviews AS r
         ON r.order_item_id = oi.id
       WHERE oi.order_id = ?
       ORDER BY oi.id ASC
@@ -366,6 +367,7 @@ async function findByOrderNumberAndUserId(
   };
 }
 
+// 이 부분 오류로 수정을 해야 함
 async function confirmOrderBynumberAndUserId(orderNumber, userId) {
   const connection = await pool.getConnection();
 
