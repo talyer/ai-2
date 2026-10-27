@@ -1,8 +1,8 @@
 {
 	"@programName": "ZAP",
 	"@version": "2.17.0",
-	"@generated": "Fri, 16 Oct 2026 08:40:56",
-	"created": "2026-10-16T08:40:56.581696130Z",
+	"@generated": "Tue, 27 Oct 2026 06:56:25",
+	"created": "2026-10-27T06:56:25.675451065Z",
 	"insights":[
 		{
 			"level": "Low",
@@ -18,15 +18,7 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.code.2xx",
 			"description": "Percentage of responses with status code 2xx",
-			"statistic": "53"
-		},
-		{
-			"level": "Info",
-			"reason": "Informational",
-			"site": "http://127.0.0.1:3000",
-			"key": "insight.code.3xx",
-			"description": "Percentage of responses with status code 3xx",
-			"statistic": "43"
+			"statistic": "93"
 		},
 		{
 			"level": "Info",
@@ -34,7 +26,7 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.code.4xx",
 			"description": "Percentage of responses with status code 4xx",
-			"statistic": "2"
+			"statistic": "6"
 		},
 		{
 			"level": "Info",
@@ -58,7 +50,7 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.endpoint.ctype.text/css",
 			"description": "Percentage of endpoints with content type text/css",
-			"statistic": "9"
+			"statistic": "11"
 		},
 		{
 			"level": "Info",
@@ -66,7 +58,7 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.endpoint.ctype.text/html",
 			"description": "Percentage of endpoints with content type text/html",
-			"statistic": "41"
+			"statistic": "39"
 		},
 		{
 			"level": "Info",
@@ -106,7 +98,7 @@
 			"site": "http://127.0.0.1:3000",
 			"key": "insight.response.slow",
 			"description": "Percentage of slow responses",
-			"statistic": "14"
+			"statistic": "89"
 		}
 	],
 	"site":[ 
@@ -116,76 +108,6 @@
 			"@port": "3000",
 			"@ssl": "false",
 			"alerts": [ 
-				{
-					"pluginid": "10055",
-					"alertRef": "10055-6",
-					"alert": "CSP: style-src unsafe-inline",
-					"name": "CSP: style-src unsafe-inline",
-					"riskcode": "2",
-					"confidence": "3",
-					"riskdesc": "Medium (High)",
-					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
-					"instances":[ 
-						{
-							"id": "5",
-							"uri": "http://127.0.0.1:3000/",
-							"nodeName": "http:\/\/127.0.0.1:3000\/",
-							"method": "GET",
-							"param": "Content-Security-Policy",
-							"attack": "",
-							"evidence": "default-src 'self';base-uri 'self';font-src 'self';form-action 'self';frame-ancestors 'none';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';upgrade-insecure-requests;worker-src 'self' blob:;child-src 'self' blob:;connect-src 'self'",
-							"otherinfo": "style-src includes unsafe-inline."
-						},
-						{
-							"id": "3",
-							"uri": "http://127.0.0.1:3000/auth/login",
-							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/login",
-							"method": "GET",
-							"param": "Content-Security-Policy",
-							"attack": "",
-							"evidence": "default-src 'self';base-uri 'self';font-src 'self';form-action 'self';frame-ancestors 'none';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';upgrade-insecure-requests;worker-src 'self' blob:;child-src 'self' blob:;connect-src 'self'",
-							"otherinfo": "style-src includes unsafe-inline."
-						},
-						{
-							"id": "2",
-							"uri": "http://127.0.0.1:3000/auth/signup",
-							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/signup",
-							"method": "GET",
-							"param": "Content-Security-Policy",
-							"attack": "",
-							"evidence": "default-src 'self';base-uri 'self';font-src 'self';form-action 'self';frame-ancestors 'none';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';upgrade-insecure-requests;worker-src 'self' blob:;child-src 'self' blob:;connect-src 'self'",
-							"otherinfo": "style-src includes unsafe-inline."
-						},
-						{
-							"id": "1",
-							"uri": "http://127.0.0.1:3000/robots.txt",
-							"nodeName": "http:\/\/127.0.0.1:3000\/robots.txt",
-							"method": "GET",
-							"param": "Content-Security-Policy",
-							"attack": "",
-							"evidence": "default-src 'self';base-uri 'self';font-src 'self';form-action 'self';frame-ancestors 'none';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';upgrade-insecure-requests;worker-src 'self' blob:;child-src 'self' blob:;connect-src 'self'",
-							"otherinfo": "style-src includes unsafe-inline."
-						},
-						{
-							"id": "0",
-							"uri": "http://127.0.0.1:3000/sitemap.xml",
-							"nodeName": "http:\/\/127.0.0.1:3000\/sitemap.xml",
-							"method": "GET",
-							"param": "Content-Security-Policy",
-							"attack": "",
-							"evidence": "default-src 'self';base-uri 'self';font-src 'self';form-action 'self';frame-ancestors 'none';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';upgrade-insecure-requests;worker-src 'self' blob:;child-src 'self' blob:;connect-src 'self'",
-							"otherinfo": "style-src includes unsafe-inline."
-						}
-					],
-					"count": "5",
-					"systemic": true,
-					"solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>",
-					"otherinfo": "<p>style-src includes unsafe-inline.</p>",
-					"reference": "<p>https://www.w3.org/TR/CSP/</p><p>https://caniuse.com/#search=content+security+policy</p><p>https://content-security-policy.com/</p><p>https://github.com/HtmlUnit/htmlunit-csp</p><p>https://web.dev/articles/csp#resource-options</p>",
-					"cweid": "693",
-					"wascid": "15",
-					"sourceid": "47"
-				},
 				{
 					"pluginid": "90004",
 					"alertRef": "90004-2",
@@ -197,7 +119,7 @@
 					"desc": "<p>Cross-Origin-Embedder-Policy header is a response header that prevents a document from loading any cross-origin resources that don't explicitly grant the document permission (using CORP or CORS).</p>",
 					"instances":[ 
 						{
-							"id": "25",
+							"id": "27",
 							"uri": "http://127.0.0.1:3000",
 							"nodeName": "http:\/\/127.0.0.1:3000",
 							"method": "GET",
@@ -207,17 +129,7 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "44",
-							"uri": "http://127.0.0.1:3000/",
-							"nodeName": "http:\/\/127.0.0.1:3000\/",
-							"method": "GET",
-							"param": "Cross-Origin-Embedder-Policy",
-							"attack": "",
-							"evidence": "",
-							"otherinfo": ""
-						},
-						{
-							"id": "45",
+							"id": "21",
 							"uri": "http://127.0.0.1:3000/auth/login",
 							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/login",
 							"method": "GET",
@@ -227,9 +139,9 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "37",
-							"uri": "http://127.0.0.1:3000/auth/signup",
-							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/signup",
+							"id": "29",
+							"uri": "http://127.0.0.1:3000/products",
+							"nodeName": "http:\/\/127.0.0.1:3000\/products",
 							"method": "GET",
 							"param": "Cross-Origin-Embedder-Policy",
 							"attack": "",
@@ -237,8 +149,8 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "33",
-							"uri": "http://127.0.0.1:3000/products?category=t-shirt",
+							"id": "34",
+							"uri": "http://127.0.0.1:3000/products?category=earring",
 							"nodeName": "http:\/\/127.0.0.1:3000\/products (category)",
 							"method": "GET",
 							"param": "Cross-Origin-Embedder-Policy",
@@ -247,9 +159,79 @@
 							"otherinfo": ""
 						}
 					],
-					"count": "5",
+					"count": "4",
 					"systemic": false,
 					"solution": "<p>Ensure that the application/web server sets the Cross-Origin-Embedder-Policy header appropriately, and that it sets the Cross-Origin-Embedder-Policy header to 'require-corp' for documents.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Embedder-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-embedder-policy).</p>",
+					"otherinfo": "",
+					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy</p>",
+					"cweid": "693",
+					"wascid": "14",
+					"sourceid": "1"
+				},
+				{
+					"pluginid": "90004",
+					"alertRef": "90004-1",
+					"alert": "Cross-Origin-Resource-Policy Header Missing or Invalid",
+					"name": "Cross-Origin-Resource-Policy Header Missing or Invalid",
+					"riskcode": "1",
+					"confidence": "2",
+					"riskdesc": "Low (Medium)",
+					"desc": "<p>Cross-Origin-Resource-Policy header is an opt-in header designed to counter side-channels attacks like Spectre. Resource should be specifically set as shareable amongst different origins.</p>",
+					"instances":[ 
+						{
+							"id": "25",
+							"uri": "http://127.0.0.1:3000",
+							"nodeName": "http:\/\/127.0.0.1:3000",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "same-site",
+							"otherinfo": ""
+						},
+						{
+							"id": "18",
+							"uri": "http://127.0.0.1:3000/auth/login",
+							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/login",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "same-site",
+							"otherinfo": ""
+						},
+						{
+							"id": "16",
+							"uri": "http://127.0.0.1:3000/css/common.css",
+							"nodeName": "http:\/\/127.0.0.1:3000\/css\/common.css",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "same-site",
+							"otherinfo": ""
+						},
+						{
+							"id": "30",
+							"uri": "http://127.0.0.1:3000/js/common.js",
+							"nodeName": "http:\/\/127.0.0.1:3000\/js\/common.js",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "same-site",
+							"otherinfo": ""
+						},
+						{
+							"id": "19",
+							"uri": "http://127.0.0.1:3000/products",
+							"nodeName": "http:\/\/127.0.0.1:3000\/products",
+							"method": "GET",
+							"param": "Cross-Origin-Resource-Policy",
+							"attack": "",
+							"evidence": "same-site",
+							"otherinfo": ""
+						}
+					],
+					"count": "5",
+					"systemic": true,
+					"solution": "<p>Ensure that the application/web server sets the Cross-Origin-Resource-Policy header appropriately, and that it sets the Cross-Origin-Resource-Policy header to 'same-origin' for all web pages.</p><p>'same-site' is considered as less secured and should be avoided.</p><p>If resources must be shared, set the header to 'cross-origin'.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that supports the Cross-Origin-Resource-Policy header (https://caniuse.com/mdn-http_headers_cross-origin-resource-policy).</p>",
 					"otherinfo": "",
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy</p>",
 					"cweid": "693",
@@ -267,7 +249,7 @@
 					"desc": "<p>Permissions Policy Header is an added layer of security that helps to restrict from unauthorized access or usage of browser/client features by web resources. This policy ensures the user privacy by limiting or specifying the features of the browsers can be used by the web resources. Permissions Policy provides a set of standard HTTP headers that allow website owners to limit which features of browsers can be used by the page such as camera, microphone, location, full screen etc.</p>",
 					"instances":[ 
 						{
-							"id": "24",
+							"id": "13",
 							"uri": "http://127.0.0.1:3000",
 							"nodeName": "http:\/\/127.0.0.1:3000",
 							"method": "GET",
@@ -277,9 +259,9 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "36",
-							"uri": "http://127.0.0.1:3000/auth/signup",
-							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/signup",
+							"id": "15",
+							"uri": "http://127.0.0.1:3000/auth/login",
+							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/login",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -287,9 +269,9 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "32",
-							"uri": "http://127.0.0.1:3000/products?category=t-shirt",
-							"nodeName": "http:\/\/127.0.0.1:3000\/products (category)",
+							"id": "8",
+							"uri": "http://127.0.0.1:3000/products",
+							"nodeName": "http:\/\/127.0.0.1:3000\/products",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -297,7 +279,7 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "27",
+							"id": "20",
 							"uri": "http://127.0.0.1:3000/robots.txt",
 							"nodeName": "http:\/\/127.0.0.1:3000\/robots.txt",
 							"method": "GET",
@@ -307,7 +289,7 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "26",
+							"id": "9",
 							"uri": "http://127.0.0.1:3000/sitemap.xml",
 							"nodeName": "http:\/\/127.0.0.1:3000\/sitemap.xml",
 							"method": "GET",
@@ -324,7 +306,7 @@
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy</p><p>https://developer.chrome.com/blog/feature-policy/</p><p>https://scotthelme.co.uk/a-new-security-header-feature-policy/</p><p>https://w3c.github.io/webappsec-feature-policy/</p><p>https://www.smashingmagazine.com/2018/12/feature-policy/</p>",
 					"cweid": "693",
 					"wascid": "15",
-					"sourceid": "1"
+					"sourceid": "14"
 				},
 				{
 					"pluginid": "10111",
@@ -337,7 +319,7 @@
 					"desc": "<p>The given request has been identified as an authentication request. The 'Other Info' field contains a set of key=value lines which identify any relevant fields. If the request is in a context which has an Authentication Method set to \"Auto-Detect\" then this rule will change the authentication to match the request identified.</p>",
 					"instances":[ 
 						{
-							"id": "60",
+							"id": "47",
 							"uri": "http://127.0.0.1:3000/auth/login",
 							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/login ()(_csrf,loginId,password)",
 							"method": "POST",
@@ -354,7 +336,7 @@
 					"reference": "<p>https://www.zaproxy.org/docs/desktop/addons/authentication-helper/auth-req-id/</p>",
 					"cweid": "-1",
 					"wascid": "-1",
-					"sourceid": "74"
+					"sourceid": "79"
 				},
 				{
 					"pluginid": "10027",
@@ -367,7 +349,7 @@
 					"desc": "<p>The response appears to contain suspicious comments which may help an attacker.</p>",
 					"instances":[ 
 						{
-							"id": "67",
+							"id": "50",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -377,7 +359,7 @@
 							"otherinfo": "The following pattern was used: \\bUSERNAME\\b and was detected in likely comment: \"/*\r\n\t\ttimeout: 0,\r\n\t\tdata: null,\r\n\t\tdataType: null,\r\n\t\tusername: null,\r\n\t\tpassword: null,\r\n\t\tcache: null,\r\n\t\tthrows: false,\r\n\t\tt\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "69",
+							"id": "52",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -387,7 +369,7 @@
 							"otherinfo": "The following pattern was used: \\bUSER\\b and was detected 10 times, the first in likely comment: \"// Can be adjusted by the user\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "72",
+							"id": "55",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -397,7 +379,7 @@
 							"otherinfo": "The following pattern was used: \\bTODO\\b and was detected 2 times, the first in likely comment: \"//\t4. _Never_ expose \"private\" data to user code (TODO: Drop _data, _removeData)\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "65",
+							"id": "48",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -407,7 +389,7 @@
 							"otherinfo": "The following pattern was used: \\bLATER\\b and was detected 6 times, the first in likely comment: \"// Give the init function the jQuery prototype for later instantiation\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "73",
+							"id": "56",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -417,7 +399,7 @@
 							"otherinfo": "The following pattern was used: \\bWHERE\\b and was detected 10 times, the first in likely comment: \"// For CommonJS and CommonJS-like environments where a proper `window`\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "70",
+							"id": "53",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -427,7 +409,7 @@
 							"otherinfo": "The following pattern was used: \\bSELECT\\b and was detected in likely comment: \"// We use this for POS matching in `select`\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "66",
+							"id": "49",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -437,7 +419,7 @@
 							"otherinfo": "The following pattern was used: \\bBUG\\b and was detected 2 times, the first in likely comment: \"// https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "68",
+							"id": "51",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -447,7 +429,7 @@
 							"otherinfo": "The following pattern was used: \\bQUERY\\b and was detected 3 times, the first in likely comment: \"// IE 11 doesn't find elements on a `[name='']` query in some cases.\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"id": "71",
+							"id": "54",
 							"uri": "http://127.0.0.1:3000/js/jquery-4.0.0.js",
 							"nodeName": "http:\/\/127.0.0.1:3000\/js\/jquery-4.0.0.js",
 							"method": "GET",
@@ -455,56 +437,16 @@
 							"attack": "",
 							"evidence": "ust the one element from the set",
 							"otherinfo": "The following pattern was used: \\bFROM\\b and was detected 54 times, the first in likely comment: \"// Return just the one element from the set\", see evidence field for the suspicious comment/snippet."
-						},
-						{
-							"id": "63",
-							"uri": "http://127.0.0.1:3000/vendor/altcha/altcha.js",
-							"nodeName": "http:\/\/127.0.0.1:3000\/vendor\/altcha\/altcha.js",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": " * Remove an effect from the #skipped_branch",
-							"otherinfo": "The following pattern was used: \\bFROM\\b and was detected 5 times, the first in likely comment: \"/**\n   * Remove an effect from the #skipped_branches map and reschedule\n   * any tracked dirty/maybe_dirty child effects\n   * @p\", see evidence field for the suspicious comment/snippet."
-						},
-						{
-							"id": "62",
-							"uri": "http://127.0.0.1:3000/vendor/altcha/altcha.js",
-							"nodeName": "http:\/\/127.0.0.1:3000\/vendor\/altcha\/altcha.js",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "n't get notified of select value changes,",
-							"otherinfo": "The following pattern was used: \\bSELECT\\b and was detected in likely comment: \"// (doesn't get notified of select value changes,\", see evidence field for the suspicious comment/snippet."
-						},
-						{
-							"id": "61",
-							"uri": "http://127.0.0.1:3000/vendor/altcha/altcha.js",
-							"nodeName": "http:\/\/127.0.0.1:3000\/vendor\/altcha\/altcha.js",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "shing\n   * them for later execution as approp",
-							"otherinfo": "The following pattern was used: \\bLATER\\b and was detected in likely comment: \"/**\n   * Traverse the effect tree, executing effects or stashing\n   * them for later execution as appropriate\n   * @param {Effec\", see evidence field for the suspicious comment/snippet."
-						},
-						{
-							"id": "64",
-							"uri": "http://127.0.0.1:3000/vendor/altcha/altcha.js",
-							"nodeName": "http:\/\/127.0.0.1:3000\/vendor\/altcha\/altcha.js",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "th `settled()`\n   * TODO replace with Promis",
-							"otherinfo": "The following pattern was used: \\bTODO\\b and was detected 3 times, the first in likely comment: \"/**\n   * A deferred that resolves when the batch is committed, used with `settled()`\n   * TODO replace with Promise.withResolver\", see evidence field for the suspicious comment/snippet."
 						}
 					],
-					"count": "13",
+					"count": "9",
 					"systemic": false,
 					"solution": "<p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p>",
 					"otherinfo": "<p>The following pattern was used: \\bUSERNAME\\b and was detected in likely comment: \"/*</p><p>\t\ttimeout: 0,</p><p>\t\tdata: null,</p><p>\t\tdataType: null,</p><p>\t\tusername: null,</p><p>\t\tpassword: null,</p><p>\t\tcache: null,</p><p>\t\tthrows: false,</p><p>\t\tt\", see evidence field for the suspicious comment/snippet.</p>",
 					"reference": "",
 					"cweid": "615",
 					"wascid": "13",
-					"sourceid": "112"
+					"sourceid": "121"
 				},
 				{
 					"pluginid": "10109",
@@ -517,7 +459,7 @@
 					"desc": "<p>The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.</p>",
 					"instances":[ 
 						{
-							"id": "8",
+							"id": "37",
 							"uri": "http://127.0.0.1:3000",
 							"nodeName": "http:\/\/127.0.0.1:3000",
 							"method": "GET",
@@ -527,7 +469,7 @@
 							"otherinfo": "Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application."
 						},
 						{
-							"id": "7",
+							"id": "45",
 							"uri": "http://127.0.0.1:3000/",
 							"nodeName": "http:\/\/127.0.0.1:3000\/",
 							"method": "GET",
@@ -544,7 +486,7 @@
 					"reference": "",
 					"cweid": "-1",
 					"wascid": "-1",
-					"sourceid": "6"
+					"sourceid": "1"
 				},
 				{
 					"pluginid": "10112",
@@ -557,7 +499,7 @@
 					"desc": "<p>The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to \"Auto-Detect\" then this rule will change the session management to use the tokens identified.</p>",
 					"instances":[ 
 						{
-							"id": "15",
+							"id": "11",
 							"uri": "http://127.0.0.1:3000",
 							"nodeName": "http:\/\/127.0.0.1:3000",
 							"method": "GET",
@@ -567,17 +509,7 @@
 							"otherinfo": "cookie:csrf_session"
 						},
 						{
-							"id": "16",
-							"uri": "http://127.0.0.1:3000/robots.txt",
-							"nodeName": "http:\/\/127.0.0.1:3000\/robots.txt",
-							"method": "GET",
-							"param": "csrf_session",
-							"attack": "",
-							"evidence": "csrf_session",
-							"otherinfo": "cookie:csrf_session"
-						},
-						{
-							"id": "14",
+							"id": "2",
 							"uri": "http://127.0.0.1:3000/sitemap.xml",
 							"nodeName": "http:\/\/127.0.0.1:3000\/sitemap.xml",
 							"method": "GET",
@@ -587,9 +519,9 @@
 							"otherinfo": "cookie:csrf_session"
 						},
 						{
-							"id": "29",
-							"uri": "http://127.0.0.1:3000",
-							"nodeName": "http:\/\/127.0.0.1:3000",
+							"id": "39",
+							"uri": "http://127.0.0.1:3000/sitemap.xml",
+							"nodeName": "http:\/\/127.0.0.1:3000\/sitemap.xml",
 							"method": "GET",
 							"param": "csrf_session",
 							"attack": "",
@@ -597,14 +529,14 @@
 							"otherinfo": "cookie:csrf_session"
 						}
 					],
-					"count": "4",
+					"count": "3",
 					"systemic": false,
 					"solution": "<p>This is an informational alert rather than a vulnerability and so there is nothing to fix.</p>",
 					"otherinfo": "<p>cookie:csrf_session</p>",
 					"reference": "<p>https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id/</p>",
 					"cweid": "-1",
 					"wascid": "-1",
-					"sourceid": "6"
+					"sourceid": "1"
 				},
 				{
 					"pluginid": "10049",
@@ -617,7 +549,7 @@
 					"desc": "<p>The response contents are storable by caching components such as proxy servers, and may be retrieved directly from the cache, rather than from the origin server by the caching servers, in response to similar requests from other users. If the response data is sensitive, personal or user-specific, this may result in sensitive information being leaked. In some cases, this may even result in a user gaining complete control of the session of another user, depending on the configuration of the caching components in use in their environment. This is primarily an issue where \"shared\" caching servers such as \"proxy\" caches are configured on the local network. This configuration is typically found in corporate or educational environments, for instance.</p>",
 					"instances":[ 
 						{
-							"id": "20",
+							"id": "6",
 							"uri": "http://127.0.0.1:3000",
 							"nodeName": "http:\/\/127.0.0.1:3000",
 							"method": "GET",
@@ -627,9 +559,9 @@
 							"otherinfo": "In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234."
 						},
 						{
-							"id": "35",
-							"uri": "http://127.0.0.1:3000/auth/signup",
-							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/signup",
+							"id": "10",
+							"uri": "http://127.0.0.1:3000/auth/login",
+							"nodeName": "http:\/\/127.0.0.1:3000\/auth\/login",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -637,9 +569,9 @@
 							"otherinfo": "In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234."
 						},
 						{
-							"id": "30",
-							"uri": "http://127.0.0.1:3000/products?category=t-shirt",
-							"nodeName": "http:\/\/127.0.0.1:3000\/products (category)",
+							"id": "5",
+							"uri": "http://127.0.0.1:3000/products",
+							"nodeName": "http:\/\/127.0.0.1:3000\/products",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -647,7 +579,7 @@
 							"otherinfo": "In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234."
 						},
 						{
-							"id": "22",
+							"id": "4",
 							"uri": "http://127.0.0.1:3000/robots.txt",
 							"nodeName": "http:\/\/127.0.0.1:3000\/robots.txt",
 							"method": "GET",
@@ -657,7 +589,7 @@
 							"otherinfo": "In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234."
 						},
 						{
-							"id": "23",
+							"id": "7",
 							"uri": "http://127.0.0.1:3000/sitemap.xml",
 							"nodeName": "http:\/\/127.0.0.1:3000\/sitemap.xml",
 							"method": "GET",
@@ -674,7 +606,7 @@
 					"reference": "<p>https://datatracker.ietf.org/doc/html/rfc7234</p><p>https://datatracker.ietf.org/doc/html/rfc7231</p><p>https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html</p>",
 					"cweid": "524",
 					"wascid": "13",
-					"sourceid": "1"
+					"sourceid": "14"
 				},
 				{
 					"pluginid": "10049",
@@ -687,39 +619,9 @@
 					"desc": "<p>The response contents are storable by caching components such as proxy servers, but will not be retrieved directly from the cache, without validating the request upstream, in response to similar requests from other users.</p>",
 					"instances":[ 
 						{
-							"id": "19",
-							"uri": "http://127.0.0.1:3000/images/banner.png",
-							"nodeName": "http:\/\/127.0.0.1:3000\/images\/banner.png",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "max-age=0",
-							"otherinfo": ""
-						},
-						{
-							"id": "17",
-							"uri": "http://127.0.0.1:3000/images/gall01.png",
-							"nodeName": "http:\/\/127.0.0.1:3000\/images\/gall01.png",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "max-age=0",
-							"otherinfo": ""
-						},
-						{
-							"id": "4",
-							"uri": "http://127.0.0.1:3000/images/gall02.png",
-							"nodeName": "http:\/\/127.0.0.1:3000\/images\/gall02.png",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "max-age=0",
-							"otherinfo": ""
-						},
-						{
-							"id": "13",
-							"uri": "http://127.0.0.1:3000/images/gall03.png",
-							"nodeName": "http:\/\/127.0.0.1:3000\/images\/gall03.png",
+							"id": "3",
+							"uri": "http://127.0.0.1:3000/css/common.css",
+							"nodeName": "http:\/\/127.0.0.1:3000\/css\/common.css",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -728,8 +630,8 @@
 						},
 						{
 							"id": "12",
-							"uri": "http://127.0.0.1:3000/images/logo.png",
-							"nodeName": "http:\/\/127.0.0.1:3000\/images\/logo.png",
+							"uri": "http://127.0.0.1:3000/js/common.js",
+							"nodeName": "http:\/\/127.0.0.1:3000\/js\/common.js",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -737,14 +639,14 @@
 							"otherinfo": ""
 						}
 					],
-					"count": "5",
+					"count": "2",
 					"systemic": false,
 					"solution": "",
 					"otherinfo": "",
 					"reference": "<p>https://datatracker.ietf.org/doc/html/rfc7234</p><p>https://datatracker.ietf.org/doc/html/rfc7231</p><p>https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html</p>",
 					"cweid": "524",
 					"wascid": "13",
-					"sourceid": "57"
+					"sourceid": "52"
 				}
 			]
 		}

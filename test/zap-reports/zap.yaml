@@ -13,13 +13,9 @@ jobs:
     maxAlertsPerRule: 10
   type: passiveScan-config
 - parameters:
-    maxDuration: 2
+    maxDuration: 1
     url: http://127.0.0.1:3000
   type: spider
-- parameters:
-    maxDuration: 2
-    url: http://127.0.0.1:3000
-  type: spiderClient
 - parameters:
     maxDuration: 0
   type: passiveScan-wait
@@ -34,6 +30,13 @@ jobs:
     reportFile: zap-baseline.html
     reportTitle: ZAP Scanning Report
     template: traditional-html
+  type: report
+- parameters:
+    reportDescription: ''
+    reportDir: /zap/wrk/
+    reportFile: zap-baseline.md
+    reportTitle: ZAP Scanning Report
+    template: traditional-md
   type: report
 - parameters:
     reportDescription: ''

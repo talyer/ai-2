@@ -26,9 +26,14 @@
     href="/css/auth.css"
   >
 
+  <link
+    rel="stylesheet"
+    href="/vendor/altcha/altcha.css"
+  >
+
   <script
     type="module"
-    src="/vendor/altcha/altcha.js"
+    src="/js/altcha-setup.js"
   ></script>
 </head>
 
@@ -143,7 +148,7 @@
         </div>
 
         <% if (isBotProtectionEnabled) { %>
-          <section class="altcha-area">
+          <section class="bot-check-box altcha-area">
             <h2>보안 확인</h2>
 
             <p>
@@ -154,6 +159,7 @@
               challenge="/security/bot/challenge"
               name="altcha"
               type="checkbox"
+              language="ko"
             ></altcha-widget>
 
             <p

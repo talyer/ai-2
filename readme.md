@@ -13,6 +13,19 @@
 6. EJS <main> 중복 제거
 7. 상품 카테고리 화면 확인
 
+# 2026-10-27 (개선)
+- OWSASP ZAP을 이용해 웹 취약점 검사로 초기 CSP 설정과 ALTCHA의 인라인 충돌로 medium 등급 경고 확인
+
+## 개선 방법
+- ALTCHA의 CSS와 Web Worker를 외부 정적 파일로 분리
+- Helmet CSP를 self 기반으로 강화
+
+
+
+
+
+
+---
 # 설치한 프로그램과 라이브러리 
 .Node.js 24
 

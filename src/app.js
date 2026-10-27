@@ -132,7 +132,7 @@ const csp = {
   fontSrc: ["'self'", 'data:'],
   connectSrc: ["'self'"],
   mediaSrc: ["'self'"],
-  mainifestSrc: ["'self'"],
+  manifestSrc: ["'self'"],
   objectSrc: ["'none'"],
   frameAncestors: ["'none'"],
   formAction: ["'self'"],

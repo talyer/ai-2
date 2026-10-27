@@ -6,6 +6,21 @@ npm test 전체 테스트 실행
 3. 같은 값을 재사용하면 차단되는지
 4. Express 기술 정보가 노출되지 않는지
 
+zap 실행 명령어
+```
+docker run --rm \
+  --network host \
+  -v "$(pwd)/test/zap-reports:/zap/wrk/:rw" \
+  ghcr.io/zaproxy/zaproxy:stable \
+  zap-baseline.py \
+  -t http://127.0.0.1:3000 \
+  -r zap-baseline.html \
+  -w zap-baseline.md \
+  -J zap-baseline.json
+```
+
+
+
 # -----------------------------------------------
 
 
