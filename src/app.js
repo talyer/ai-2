@@ -5,7 +5,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-// 회원가입, 로그인 기능 Captcha 즉 봇 방지 시스템 추가 할 예정
+
 // const Crypto = require('crypto');
 
 
@@ -56,38 +56,89 @@ if (env.trustProxy) {
 
 /*
 현재 index.ejs에 인라인 style과 script가 있으므로
-CSP만 임시로 비활성화합니다.
+CSP만 임시로 비활성화합니다. (적용시키고 style와 script 수정할 예정)
 그 외 Helmet 보안 헤더는 적용됩니다.
 CSRF 적용으로 인해 Helmet 적용시킴
 */
+const httpsEnabled = env.cookieSecure === true;
+
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        /*
-        ALTCHA 기본 번들 내부 스타일 때문에
-        현재 단계에서는 스타일만 예외 처리합니다.
-        */
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        /*
-        ALTCHA 계산용 Web Worker를 허용합니다.
-        */
-        workerSrc: ["'self'", 'blob:'],
-        childSrc: ["'self'", 'blob:'],
-        imgSrc: ["'self'", 'data:'],
-        connectSrc: ["'self'"],
-        fontSrc: ["'self'"],
-        objectSrc: ["'none'"],
-        baseUri: ["'self'"],
-        formAction: ["'self'"],
-        frameAncestors: ["'none'"]
+    constSecurityPolicy: false,
+
+    strictTransportSecurity:
+      httpsEnabled
+        ? {
+            maxAge: 31536000,
+            includeSubDomains: true,
+            preload: false
+        }
+        : false,
+
+      crossOriginOpenerPolicy: {
+        policy: "same-origin"
+      },
+      
+      crossOriginResourcePolicy: {
+        policy: "same-site"
+      },
+
+      referrerPolicy: {
+        policy: "no-referrer"
       }
-    }
   })
 );
 
+// helmet 전 버전
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'"],
+//         /*
+//         ALTCHA 기본 번들 내부 스타일 때문에
+//         현재 단계에서는 스타일만 예외 처리합니다.
+//         */
+//         styleSrc: ["'self'", "'unsafe-inline'"],
+//         /*
+//         ALTCHA 계산용 Web Worker를 허용합니다.
+//         */
+//         workerSrc: ["'self'", 'blob:'],
+//         childSrc: ["'self'", 'blob:'],
+//         imgSrc: ["'self'", 'data:'],
+//         connectSrc: ["'self'"],
+//         fontSrc: ["'self'"],
+//         objectSrc: ["'none'"],
+//         baseUri: ["'self'"],
+//         formAction: ["'self'"],
+//         frameAncestors: ["'none'"]
+//       }
+//     }
+//   })
+// );
+
+const csp = {
+  defaultSrc: ["'self'"],
+  baseUri: ["'self'"],
+  scriptSrc: ["'self'"],
+  // onclick, onerror 같은 HTML 속성 안의 JavaScript 실행 차단
+  scriptSrcAttr: ["'none'"],
+  styleSrc: ["'self'"],
+  styleSrcElem: ["'self'"],
+  // style="color: red" 와 같은 인라인 차단
+  styleSrcAttr: ["'none'"],
+  imgSrc: ["'self'", 'data:'],
+  fontSrc: ["'self'", 'data:'],
+  connectSrc: ["'self'"],
+  mediaSrc: ["'self'"],
+  mainifestSrc: ["'self'"],
+  objectSrc: ["'none'"],
+  frameAncestors: ["'none'"],
+  formAction: ["'self'"],
+  workerSrc: ["'self'", 'blob:'],
+  childSrc: ["'self'", 'blob:'],
+};
 
 
 
@@ -97,6 +148,21 @@ if (env.nodeEnv === 'development') {
     morgan('dev')
   );
 }
+
+if (httpsEnabled) {
+  csp.upgradeInsecureRequests = [];
+}
+
+
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: false,
+    directives: csp
+  })
+);
+
+// 요청 로그
+app.use(morgan('dev'));
 
 
 app.use(
@@ -152,7 +218,7 @@ app.use(requestOriginMiddleware);
 app.use(verifyCsrfToken);
 
 
-
+app.use('/', pageRoutes);
 
 app.use('/auth', authRoutes);
 
@@ -160,7 +226,9 @@ app.use('/orders', orderRoutes);
 
 app.use('/reviews', reviewRoutes);
 
-app.use('/', pageRoutes);
+
+// bot 라우터
+app.use('/security/bot', botRoutes);
 
 
 app.use(
