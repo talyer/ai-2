@@ -52,9 +52,18 @@ if (!Number.isInteger(databasePort)) {
   )
 }
 
-// 나중에 ai 사용할 떄 mock 말고 다른걸로
+// 기본 챗봇 개인 AI
 const aiProvider = 
-  process.env.AI_PROVIDER || 'mock';
+  process.env.AI_PROVIDER || 'ollama';
+
+// 현재 리뷰 분석 테스트
+const reviewAiProvider = 
+  process.env.REVIEW_AI_PROVIDER || 'mock';
+
+// SOC분석
+const socAiProvider =
+  process.env.SOC_AI_PROVIDER || 'ollama';
+
 
 const allowedAiProviders = [
   'mock',
@@ -62,18 +71,43 @@ const allowedAiProviders = [
   'ollama'
 ];
 
+
 if (!allowedAiProviders.includes(aiProvider)) {
   throw new Error(
     `지원하지 않는 AI_PROVIDER입니다: ${aiProvider}`
   );
 }
 
-if (aiProvider == 'clova') {
+const allowedReviewAiProviders = [
+  'mock',
+  'clova'
+];
+
+if (!allowedReviewAiProviders.includes(reviewAiProvider)) {
+  throw new Error(`지원하지 않는 REVIEW_AI_PROVIDER입니다: ${reviewAiProvider}`);
+}
+
+const allowedSocAiProviders = [
+  'mock',
+  'ollama'
+];
+
+if (!allowedSocAiProviders.includes(socAiProvider)) {
+  throw new Error(`지원하지 않는 SOC_AI_PROVIDER입니다: ${socAiProvider}`);
+}
+
+if (aiProvider === 'clova') {
   const requiredClovaVariables = [
     'CLOVA_STUDIO_API_URL',
     'CLOVA_STUDIO_API_KEY',
     'CLOVA_STUDIO_MODEL'
   ];
+
+  if (process.env.CLOVA_ENABLED !== 'true') {
+    throw new Error(`REVIEW_AI_PROVIDER=clova이면 CLOVA_ENABLED=true가 필요합니다.`);
+  }
+
+
 
   for (const variable of requiredClovaVariables) {
     if (!process.env[variable]) {
@@ -127,13 +161,22 @@ const env = Object.freeze ({
 
     provider : aiProvider,
 
-    apiUrl : process.env.CLOVA_STUDIO_API_URL || '',
+    reviewProvider: reviewAiProvider,
 
-    apiKey : process.env.CLOVA_STUDIO_API_KEY,
+    socProvider: socAiProvider,
 
-    model : process.env.CLOVA_STUDIO_MODEL || '',
+    clova: {
+      enabled: process.env.CLOVA_ENABLED === 'true',
 
-    timeoutMs : Number(process.env.CLOVA_TIMEOUT_MS || 15000),
+      apiUrl : process.env.CLOVA_STUDIO_API_URL || '',
+
+      apiKey : process.env.CLOVA_STUDIO_API_KEY,
+
+      // 나중에 모델 이름 작성
+      model : process.env.CLOVA_STUDIO_MODEL || '',
+
+      timeoutMs : Number(process.env.CLOVA_TIMEOUT_MS || 15000)
+    },
 
     ollama : {
       url : (process.env.OLLAMA_URL || 'http://127.0.0.1:11434').replace(/\/$/, ''),
