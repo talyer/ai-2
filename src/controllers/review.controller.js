@@ -4,6 +4,8 @@ const { validationResult } = require('express-validator');
 
 const reviewRepository = require('../repositories/review.repository');
 
+const reviewAnalysisService = require('../services/review-analysis.service');
+
 function renderError(res,status,title,message) {
   return res.status(status).render('errors/error',
     {
@@ -41,6 +43,15 @@ async function createReview(req, res, next) {
 
     const result = await reviewRepository.createReview({userId, orderItemId, rating, content});
 
+    try {
+      await reviewAnalysisService.analyzeReview({
+        reviewId: result.reviewId,
+        content
+      });
+    } catch (analysisError) {
+      console.error('리뷰 AI 분석 실패:', analysisError.message);
+    }
+    
     return res.redirect(303, `/products/detail/${result.productId}?review=created`);
   } catch (error) {
     if (error.code === 'PURCHASE_NOT_FOUND') {

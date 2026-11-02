@@ -100,6 +100,7 @@ async function createReview({userId, orderItemId, rating, content}) {
   }
 }
 
+// 리뷰 조회후 ai 리뷰 분석 
 async function findVisibleByProductId(productId) {
   const [rows] = await pool.execute(
     `
@@ -108,10 +109,19 @@ async function findVisibleByProductId(productId) {
       r.rating,
       r.content,
       r.created_at,
-      u.display_name AS displayName
+      u.display_name AS displayName,
+      ra.analysis_status AS analysisStatus,
+      ra.sentiment AS sentiment,
+      ra.sentiment_score AS sentimentScore,
+      ra.keywords AS keywords,
+      ra.summary AS analysisSummary,
+      ra.provider AS analysisProvider,
+      ra.analyzed_at AS analyzedAt
     FROM reviews AS r
     INNER JOIN users AS u
       ON u.id = r.user_id
+    LEFT JOIN review_analysis AS ra
+      ON ra.review_id = r.id
     WHERE r.product_id = ?
       AND r.status = 'VISIBLE'
     ORDER BY r.created_at DESC
@@ -120,7 +130,21 @@ async function findVisibleByProductId(productId) {
     [productId]
   );
 
-  return rows;
+  return rows.map((row) => {
+    let keywords = [];
+
+    if (Array.isArray(row.keywords)) {
+      keywords = row.keywords;
+    } else if (row.keywords) {
+      try {
+        keywords = JSON.parse(row.keywords);
+      } catch (error) {
+        keywords = [];
+      }
+    }
+
+    return {...row, keywords};
+  });
 }
 
 module.exports = {

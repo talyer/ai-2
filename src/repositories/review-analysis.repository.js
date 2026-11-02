@@ -3,7 +3,7 @@
 const { pool } = require('../config/database');
 
 async function createPending({reviewId, provider, modelName}) {
-  await pool.execute(
+  const [result] = await pool.execute(
     `
     INSERT INTO review_analysis (
       review_id,
@@ -11,7 +11,7 @@ async function createPending({reviewId, provider, modelName}) {
       model_name, 
       analysis_status
       )
-    VALUES (?, ?, ?, 'PENDING)
+    VALUES (?, ?, ?, 'PENDING')
 
     ON DUPLICATE KEY UPDATE
       provider = VALUES(provider),
@@ -24,6 +24,8 @@ async function createPending({reviewId, provider, modelName}) {
     `,
     [reviewId, provider, modelName]
   );
+  return result;
+
 }
 
 // 분석 실행 중 상태로 변경 함수
@@ -39,6 +41,41 @@ async function markProcessing(reviewId) {
   );
 }
 
+// 지금 분석 리뷰가 아예 안되서 임시 추가
+function normalizeSentiment(value) {
+  const sentimentValue = String(value || '')
+    .trim()
+    .toUpperCase();
+
+  const sentimentMap = {
+    POSITIVE: 'POSITIVE',
+    POS: 'POSITIVE',
+    '긍정': 'POSITIVE',
+
+    NEUTRAL: 'NEUTRAL',
+    MIXED: 'NEUTRAL',
+    UNKNOWN: 'NEUTRAL',
+    '중립': 'NEUTRAL',
+    '혼합': 'NEUTRAL',
+
+    NEGATIVE: 'NEGATIVE',
+    NEG: 'NEGATIVE',
+    '부정': 'NEGATIVE'
+
+  };
+
+  const normalized = sentimentMap[sentimentValue];
+
+  if (!normalized) {
+    console.warn(`[감정값 변환] 허용되지 않은 값 "${value}를 NEUTRAL로 변경합니다."`);
+
+    return 'NEUTRAL';
+  }
+
+  return normalized;
+}
+
+
 // 정상적으로 분석이 끝난 경우
 async function markCompleted({
   reviewId,
@@ -47,6 +84,16 @@ async function markCompleted({
   keywords,
   summary
 }) {
+  const normalizedSentiment = normalizedSentiment(sentiment);
+
+  const normalizedScore = Number.isFinite(Number(sentimentScore))
+    ? Number(sentimentScore)
+    : null;
+
+  console.log(`[리뷰 ${reviewId}] 감정값:`,
+    JSON.stringify(sentiment), '->', normalizedSentiment
+  );
+
   await pool.execute(
     `
     UPDATE review_analysis
@@ -61,10 +108,10 @@ async function markCompleted({
     WHERE review_id = ?
     `,
     [
-      sentiment,
-      sentimentScore,
-      JSON.stringify(keywords),
-      summary,
+      normalizedSentiment,
+      normalizedScore,
+      JSON.stringify(keywords || [] ),
+      summary || null,
       reviewId
     ]
   );
@@ -95,6 +142,7 @@ async function markFailed({
 module.exports = {
   createPending,
   markProcessing,
+  normalizeSentiment,
   markCompleted,
   markFailed
-}
+};

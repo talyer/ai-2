@@ -457,10 +457,56 @@
                   </strong>
                 </div>
 
-                <!-- XSS 방어를 위해 <%= %> 사용 -->
+                <%# XSS 방어를 위해 이스케이프 출력 문법 사용 %>
                 <p class="review-content">
                   <%= review.content %>
                 </p>
+                <div class="review-ai-analysis">
+                  <% if (review.analysisStatus === 'COMPLETED') { %>
+                    <div class="review-ai-result">
+                      <p>
+                        <strong>AI 감정:</strong>
+
+                        <% if (review.sentiment === 'POSITIVE') { %>
+                          긍정
+                        <% } else if (review.sentiment === 'NEGATIVE') { %>
+                          부정
+                        <% } else { %>
+                          중립
+                        <% } %>
+                      </p>
+
+                      <p>
+                        <strong>AI 요약:</strong>
+                        <%= review.analysisSummary %>
+                      </p>
+
+                      <% if (Array.isArray(review.keywords) && review.keywords.length > 0) { %>
+                        <div class="review-ai-keywords">
+                          <% review.keywords.forEach((keyword) => { %>
+                            <span>#<%= keyword %></span>
+                          <% }); %>
+                        </div>
+                      <% } %>  
+                    </div>
+                  
+                <% } else if (review.analysisStatus === 'PENDING' || review.analysisStatus === 'PROCESSING') { %>   
+                  <p class="review-ai-pending">
+                    AI가 리뷰를 분석하고 있습니다.
+                  </p>
+                
+                <% } else if (review.analysisStatus === 'FAILED') { %>
+                  <p class="review-ai-failed">
+                    AI 분석에 실패했습니다.
+                    원본 리뷰는 정상적으로 저장되었습니다.  
+                  </p>
+
+                <% } else { %>
+                  <p class="review-ai-pending">
+                    AI 분석을 기다리고 있습니다.
+                  </p>
+                <% } %>
+              </div>
               </article>
             <% }); %>
           </div>
