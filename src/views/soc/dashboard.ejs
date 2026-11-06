@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="csrf-token" content="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>">
+  <link rel="stylesheet" href="/css/soc-dashboard.css">
+</head>
+<body>
+  <header class="soc-top">
+    <div>
+      <p class="soc-kicker">GX CommerceSOC</p>
+      <h1>보안 관제 대시보드</h1>
+    </div>
+    <nav>
+      <a href="/">쇼핑몰</a>
+      <a href="/soc">관제</a>
+    </nav>
+  </header>
+
+  <section class="soc-stats">
+    <article>
+      <span>보안 이벤트</span>
+      <strong id="stat-events"><%= stats.events %></strong>
+    </article>
+    <article>
+      <span>열린 사건</span>
+      <strong id="stat-incidents"><%= stats.openIncidents %></strong>
+    </article>
+    <article>
+      <span>임시 차단 IP</span>
+      <strong id="stat-blocks"><%= stats.blockedIps %></strong>
+    </article>
+    <article>
+      <span>승격 임계치</span>
+      <strong><%= stats.threshold %></strong>
+    </article>
+  </section>
+
+  <% if (demoMode) { %>
+  <section class="soc-lab">
+    <h2>연습용 시뮬레이터</h2>
+    <p>실제 공격 도구가 아닙니다. 관제 파이프라인에 연습 이벤트만 넣습니다.</p>
+    <div class="soc-lab-actions">
+      <button type="button" data-scenario="failed_login">로그인 실패</button>
+      <button type="button" data-scenario="brute_force">무차별 대입</button>
+      <button type="button" data-scenario="web_probe">웹 스캔</button>
+      <button type="button" data-scenario="admin_denied">권한 거부</button>
+    </div>
+    <p id="lab-result" class="soc-lab-result"></p>
+  </section>
+  <% } %>
+
+  <section class="soc-grid">
+    <div>
+      <h2>보안 사건</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>유형</th>
+            <th>IP</th>
+            <th>위험도</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody id="incident-body">
+          <% incidents.forEach((incident) => { %>
+          <tr>
+            <td><a href="/soc/incidents/<%= incident.id %>">#<%= incident.id %></a></td>
+            <td><%= incident.incident_type %></td>
+            <td><%= incident.source_ip %></td>
+            <td><%= incident.risk_score %> / <%= incident.severity %></td>
+            <td><%= incident.status %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2>최근 이벤트</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>유형</th>
+            <th>IP</th>
+            <th>요약</th>
+            <th>점수</th>
+          </tr>
+        </thead>
+        <tbody id="event-body">
+          <% events.forEach((event) => { %>
+          <tr>
+            <td><%= event.event_type %></td>
+            <td><%= event.source_ip %></td>
+            <td><%= event.summary %></td>
+            <td><%= event.risk_score %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>임시 차단</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>IP</th>
+          <th>사유</th>
+          <th>만료</th>
+        </tr>
+      </thead>
+      <tbody id="block-body">
+        <% blocks.forEach((block) => { %>
+        <tr>
+          <td><%= block.ip_address %></td>
+          <td><%= block.reason %></td>
+          <td><%= block.expires_at %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
+
+  <script src="/js/soc-dashboard.js"></script>
+</body>
+</html>

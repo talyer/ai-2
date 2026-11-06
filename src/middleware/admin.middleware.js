@@ -1,5 +1,5 @@
 'use strict';
-const { createSecurityEvent } = require('../services/soc/event.service');
+const { recordSocEvent } = require('../services/soc/pipeline');
 
 async function adminMiddleware(req, res, next) {
   if (req.user?.role === 'admin') {
@@ -7,7 +7,7 @@ async function adminMiddleware(req, res, next) {
   }
 
   try {
-    await createSecurityEvent({
+    await recordSocEvent({
       requestId: req.requestId,
       eventType : 'AUTH_ADMIN_DENIED',
       category : 'AUTHORIZATION',

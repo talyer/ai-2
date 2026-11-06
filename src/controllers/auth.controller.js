@@ -5,6 +5,25 @@ const jwt = require('jsonwebtoken');
 const { env } = require('../config/env');
 const { validationResult } = require('express-validator');
 const userRepository = require('../repositories/user.repository');
+const { recordSocEvent } = require('../services/soc/pipeline');
+
+function recordLoginFailure(req, username, summary, riskScore) {
+  recordSocEvent({
+    requestId: req.requestId,
+    eventType: 'AUTH_LOGIN_FAILED',
+    category: 'AUTHENTICATION',
+    sourceIp: req.ip,
+    username: username || null,
+    method: req.method,
+    path: req.originalUrl,
+    statusCode: 401,
+    riskScore,
+    detector: 'RULE',
+    summary
+  }).catch((error) => {
+    console.error('로그인 실패 이벤트 저장 실패:', error.message);
+  });
+}
 
 // 서버가 라우터를 정상적으로 불러오는지만 확일할 임시 코드임 확인 후 삭제 할 예정
 
@@ -56,6 +75,13 @@ const { loginId, password } = req.body;
 const user = await userRepository.findByLoginId(loginId?.trim());
 
 if (!user) {
+    recordLoginFailure(
+      req,
+      loginId,
+      '존재하지 않는 아이디로 로그인했습니다.',
+      30
+    );
+
     return res.status(401).render('auth/login', {
       title: '로그인',
       errorMessage: '아이디 또는 비밀번호가 올바르지 않습니다.',
@@ -92,9 +118,33 @@ if (!user) {
     const updatedUser =
       await userRepository.incrementFailedLoginCount(user.id);
 
+    recordLoginFailure(
+      req,
+      loginId,
+      '비밀번호가 올바르지 않습니다.',
+      40
+    );
+
     if (updatedUser.failedLoginCount >= 5) {
       const lockedUntil = new Date(Date.now() + 10 * 60 * 1000);
       await userRepository.lockUserUntil(user.id, lockedUntil);
+
+      recordSocEvent({
+        requestId: req.requestId,
+        eventType: 'AUTH_ACCOUNT_LOCKED',
+        category: 'AUTHENTICATION',
+        sourceIp: req.ip,
+        userId: user.id,
+        username: loginId,
+        method: req.method,
+        path: req.originalUrl,
+        statusCode: 423,
+        riskScore: 70,
+        detector: 'RULE',
+        summary: '로그인 5회 실패로 계정이 잠겼습니다.'
+      }).catch((error) => {
+        console.error('계정 잠금 이벤트 저장 실패:', error.message);
+      });
 
       return res.status(423).render('auth/login', {
         title: '로그인',

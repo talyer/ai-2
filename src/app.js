@@ -34,6 +34,17 @@ const currentUserMiddleware =
 
 const botRoutes = require('./routes/bot.routes');
 
+const socRoutes = require('./routes/soc.routes');
+
+const requestContext =
+  require('./middleware/request-context.middleware');
+
+const blockedIpMiddleware =
+  require('./middleware/blocked-ip.middleware');
+
+const wafMiddleware =
+  require('./middleware/waf.middleware');
+
 const app = express();
 
 app.locals.botProtectionEnabled = env.botProtection.enabled;
@@ -183,6 +194,8 @@ app.use(
   cookieParser()
 );
 
+app.use(requestContext);
+
 app.use(
   express.static(
     path.join(
@@ -211,6 +224,8 @@ app.use(
 app.use('/security/bot', botRoutes);
 
 app.use(currentUserMiddleware);
+app.use(blockedIpMiddleware);
+app.use(wafMiddleware);
 
 app.use(attachCsrfToken);
 
@@ -225,6 +240,8 @@ app.use('/auth', authRoutes);
 app.use('/orders', orderRoutes);
 
 app.use('/reviews', reviewRoutes);
+
+app.use('/soc', socRoutes);
 
 
 // bot 라우터

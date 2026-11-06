@@ -1,8 +1,8 @@
 const { rateLimit } = require('express-rate-limit');
 
 const {
-  createSecurityEvent
-} = require('../services/soc/event.service');
+  recordSocEvent
+} = require('../services/soc/pipeline');
 
 const loginRateLimit = rateLimit({
   windowMs: 5 * 60 * 1000,
@@ -12,7 +12,7 @@ const loginRateLimit = rateLimit({
   legacyHeaders: false,
 
   handler: (req, res) => {
-    createSecurityEvent({
+    recordSocEvent({
       requestId : req.requestId,
       eventType : 'WEB_RATE_LIMIT',
       category : 'AUTHENTICATION',
