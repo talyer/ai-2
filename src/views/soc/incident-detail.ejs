@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="csrf-token" content="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>">
+  <link rel="stylesheet" href="/css/soc-dashboard.css">
+</head>
+<body data-incident-id="<%= incident.id %>">
+  <header class="soc-top">
+    <div>
+      <p class="soc-kicker">GX CommerceSOC</p>
+      <h1>사건 #<%= incident.id %></h1>
+    </div>
+    <nav>
+      <a href="/soc">대시보드</a>
+      <a href="/">쇼핑몰</a>
+    </nav>
+  </header>
+
+  <section class="soc-detail">
+    <p>유형: <%= incident.incident_type %></p>
+    <p>제목: <%= incident.title %></p>
+    <p>출발지: <%= incident.source_ip %></p>
+    <p>위험도: <%= incident.risk_score %> (<%= incident.severity %>)</p>
+    <p>상태: <%= incident.status %></p>
+    <p>이벤트 수: <%= incident.event_count %></p>
+    <p><%= incident.description %></p>
+    <div class="soc-lab-actions">
+      <button type="button" id="btn-analyze">AI 분석</button>
+      <button type="button" id="btn-resolve">사건 종료</button>
+    </div>
+    <p id="detail-result" class="soc-lab-result"></p>
+  </section>
+
+  <section>
+    <h2>AI 분석</h2>
+    <% if (analysis) { %>
+      <p>상태: <%= analysis.analysis_status %></p>
+      <p>모델: <%= analysis.provider %> / <%= analysis.model_name %></p>
+      <p><%= analysis.summary %></p>
+      <% if (analysis.recommended_actions_json) { %>
+        <pre><%= analysis.recommended_actions_json %></pre>
+      <% } %>
+      <% if (analysis.error_message) { %>
+        <p>오류: <%= analysis.error_message %></p>
+      <% } %>
+    <% } else { %>
+      <p>아직 분석 결과가 없습니다.</p>
+    <% } %>
+  </section>
+
+  <section>
+    <h2>묶인 이벤트</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>유형</th>
+          <th>경로</th>
+          <th>점수</th>
+          <th>요약</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% incidentEvents.forEach((event) => { %>
+        <tr>
+          <td><%= event.event_type %></td>
+          <td><%= event.request_path %></td>
+          <td><%= event.risk_score %></td>
+          <td><%= event.summary %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
+
+  <script src="/js/soc-incident.js"></script>
+</body>
+</html>
