@@ -194,7 +194,7 @@ async function analyzeReview({reviewId, content}) {
 
   const modelName = provider === 'clova'
     ? env.ai.clova.model
-    : 'mock-v1;'
+    : 'mock-v1'
 
   await reviewAnalysisRespository.createPending({reviewId, provider, modelName});
 

@@ -86,14 +86,14 @@ async function markCompleted({
   keywords,
   summary
 }) {
-  const normalizedSentimentValue = normalizedSentiment(sentiment);
+  const normalizedSentimentValue = normalizeSentiment(sentiment);
 
   const normalizedScore = Number.isFinite(Number(sentimentScore))
     ? Number(sentimentScore)
     : null;
 
   console.log(`[리뷰 ${reviewId}] 감정값:`,
-    JSON.stringify(sentiment), '->', normalizedSentiment
+    JSON.stringify(sentiment), '->', normalizedSentimentValue
   );
 
   await pool.execute(
