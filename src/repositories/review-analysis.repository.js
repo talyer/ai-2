@@ -18,6 +18,8 @@ async function createPending({reviewId, provider, modelName}) {
       model_name = VALUES(model_name),
       analysis_status = 'PENDING',
       sentiment = NULL,
+      sentiment_score = NULL,
+      keywords = NULL,
       summary = NULL,
       error_message = NULL,
       analyzed_at = NULL
@@ -67,7 +69,7 @@ function normalizeSentiment(value) {
   const normalized = sentimentMap[sentimentValue];
 
   if (!normalized) {
-    console.warn(`[감정값 변환] 허용되지 않은 값 "${value}를 NEUTRAL로 변경합니다."`);
+    console.warn(`[감정값 변환] 허용되지 않은 값 "${value}"를 NEUTRAL로 변경합니다."`);
 
     return 'NEUTRAL';
   }
@@ -84,7 +86,7 @@ async function markCompleted({
   keywords,
   summary
 }) {
-  const normalizedSentiment = normalizedSentiment(sentiment);
+  const normalizedSentimentValue = normalizedSentiment(sentiment);
 
   const normalizedScore = Number.isFinite(Number(sentimentScore))
     ? Number(sentimentScore)
@@ -108,7 +110,7 @@ async function markCompleted({
     WHERE review_id = ?
     `,
     [
-      normalizedSentiment,
+      normalizedSentimentValue,
       normalizedScore,
       JSON.stringify(keywords || [] ),
       summary || null,

@@ -96,7 +96,7 @@ if (!allowedSocAiProviders.includes(socAiProvider)) {
   throw new Error(`지원하지 않는 SOC_AI_PROVIDER입니다: ${socAiProvider}`);
 }
 
-if (aiProvider === 'clova') {
+if (reviewAiProvider === 'clova') {
   const requiredClovaVariables = [
     'CLOVA_STUDIO_API_URL',
     'CLOVA_STUDIO_API_KEY',

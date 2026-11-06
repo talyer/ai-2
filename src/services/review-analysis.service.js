@@ -18,7 +18,7 @@ function analyzeWithMock(content) {
     '편해요',
     '만족',
     '추천',
-    '부드러원요'
+    '부드러워요'
   ];
 
   const negativeWords = [
@@ -31,19 +31,19 @@ function analyzeWithMock(content) {
     '실망'
   ];
 
-  const positveCount = PositiveWords.filter((word) => text.includes(word)).length;
+  const positiveCount = PositiveWords.filter((word) => text.includes(word)).length;
 
   const negativeCount = negativeWords.filter((word) => text.includes(word)).length;
 
   let sentiment = 'NEUTRAL';
   let sentimentScore = 0.5;
 
-  if (positveCount > negativeCount) {
-    sentiment = 'POSITVE';
+  if (positiveCount > negativeCount) {
+    sentiment = 'POSITIVE';
     sentimentScore = 0.9;
   }
 
-  if (negativeCount > positveCount) {
+  if (negativeCount > positiveCount) {
     sentiment = 'NEGATIVE';
     sentimentScore = 0.9;
   }
@@ -93,7 +93,7 @@ function removeMarkdownCodeBlock(value) {
 // 실제 CLOVA Studio 호출용
 // 지금 env에 REVIEW_AI_PROVIDER=mock 이므로 수정
 
-async function analyzedWithClova(content) {
+async function analyzeWithClova(content) {
   if (!env.ai.clova.enabled) {
     throw new Error('ClOVA_ENABLED가 false 입니다.');
   }
@@ -104,7 +104,7 @@ async function analyzedWithClova(content) {
       method: 'POST',
 
       headers: {
-        Authorization: `Bearer ${env.ai.clova.apikey}`,
+        Authorization: `Bearer ${env.ai.clova.apiKey}`,
 
         'Content-Type' : 'application/json',
 
@@ -167,7 +167,7 @@ async function analyzedWithClova(content) {
         .trim()
         .slice(0, 30)
   )
-  .fliter(Boolean)
+  .filter(Boolean)
   .slice(0, 5) : [];
 
   return { 
